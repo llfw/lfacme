@@ -13,7 +13,8 @@ LIBMODE?=	0644
 LIB=		init.sh
 
 CHALLENGEMODE?=	0755
-CHALLENGE=	kerberos.sh
+CHALLENGE=	http.sh \
+		kerberos.sh
 
 BINMODE?=	0755
 BIN=		lfacme-renew.sh \

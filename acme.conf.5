@@ -18,7 +18,7 @@ The following variables may be set:
 (Required.)
 The URL of the ACME server.
 .It Va ACME_DATADIR
-The path to the runtime datadirectory, where the ACME account key and any
+The path to the runtime data directory, where the ACME account key and any
 issued certificates will be stored.
 The default value is
 .Pa /var/db/lfacme .
@@ -28,6 +28,20 @@ The path to a directory containing hooks to invoke when issuing certificates
 .Xr domains.conf 5 ) .
 The default value is
 .Pa /usr/local/etc/lfacme/hooks .
+.It Va ACME_HTTP_CHALLENGE_DIR
+The directory to store ACME challenges when responding to an
+.Dq http-01
+challenge with the
+.Dq http
+challenge handler.
+This directory must be served at
+.Dq /.well-known/acme-challenge
+on any domain which will be validated with the
+.Dq http
+handler.
+There is no default value; you must set this if you use the
+.Dq http
+handler.
 .It Va ACME_KERBEROS_PRINCIPAL
 The Kerberos principal to use when responding to a
 .Dq dns-01

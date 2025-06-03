@@ -2,7 +2,8 @@
 # so you can include other files or call programs here if you like.
 
 
-### ACME_URL: The URL of the ACME server.
+### ACME_URL
+# The URL of the ACME server.
 # No default, you must set this.
 
 # Let's Encrypt production:
@@ -12,22 +13,34 @@
 #ACME_URL="https://acme-staging-v02.api.letsencrypt.org/directory"
 
 
-### ACME_DATADIR: Runtime data directory.
+### ACME_DATADIR
+# Runtime data directory.
 # This is where the ACME account key and the issued certificates are stored.
 # The default is /var/db/lfacme.
 
 #ACME_DATADIR="/var/db/lfacme"
 
 
-### ACME_HOOKDIR: The path to the directory containing certificate hooks.
+### ACME_HOOKDIR
+#The path to the directory containing certificate hooks.
 # The default is "/usr/local/etc/lfacme/hooks".
 # There is usually no need to change this.
 
 #ACME_HOOKDIR="/some/directory"
 
 
-### ACME_KERBEROS_PRINCIPAL: The Kerberos principal we use for nsupdate.
-# The default is "host/$(hostname)", which assumes a default realm is
-# configured in /etc/krb5.conf.
+### ACME_HTTP_CHALLENGE_DIR
+# When using the "http" challenge handler, this is the directory which contains
+# ACME challenges.  This must be served at /.well-known/acme-challenge on any
+# domain using http validation.
+# No default, you must set this if you use the "http" handler.
+
+#ACME_HTTP_CHALLENGE_DIR="/var/www/acme-challenge"
+
+
+### ACME_KERBEROS_PRINCIPAL
+# When using the "kerberos" challenge handler, this is the Kerberos principal
+# we use for nsupdate.  The default is "host/$(hostname)", which assumes a
+# default realm is configured in /etc/krb5.conf.
 
 #ACME_KERBEROS_PRINCIPAL="host/server.example.org@EXAMPLE.ORG"

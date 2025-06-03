@@ -52,6 +52,8 @@
 #
 # For example, to use RSA (instead of the default ECDSA) for all certificates:
 *		type=rsa
+# To use HTTP for all challenges:
+*		challenge=http
 
 # Issue a cert for example.org using the default options.
 # We don't provide any SANs, so the certificate name is used as the domain.
