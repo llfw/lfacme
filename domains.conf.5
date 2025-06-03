@@ -16,12 +16,13 @@ will issue or renew.
 Each line specifies one certificate as a series of whitespace-separated fields.
 The first field is the certificate name, which is used internally by
 .Nm lfacme
-in the certificate filename, but is not part of the certificate itself.
-The remaining fields are certificate options, which may be either subject alt
-names or options for the certificate.
+in the certificate filename but is not part of the certificate itself.
+The remaining fields are either certificate options or subject alt names for
+the certificate.
 .Pp
 If no subject alt names are provided, then the certificate name is used as
 the common name and subject alt name.
+Otherwise, the first subject alt name is used as the common name.
 .Pp
 If the certificate name is
 .Dq * ,

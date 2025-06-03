@@ -7,23 +7,23 @@
 # Empty lines and lines beginning with a '#' character are ignored.
 
 ##
-# Each line specifies one certificate using one or more whitespace-separated
-# fields.
+# Each line specifies one certificate as a series of whitespace-separated
+# fields.  The first field is the certificate name, which is used internally
+# by lfacme in the certificate filename, but is not part of the certificate
+# itself.
 #
-# The first field is the certificate name, which is only used internally by
-# lfacme and is not part of the certificate.
-#
-# The remaining fields are certificate options, which may be either subject alt
-# names or options for the certificate.
+# The remaining fields are either certificate options or subject alt names for
+# the certificate.
 #
 # If no subject alt names are provided, then the certificate name is used as
-# the common name and subject alt name.
+# the common name and subject alt name.  Otherwise, the first subject alt name
+# is used as the common name.
 
 ##
 # Supported options:
 #
 # type=ec	Generate a secp384r1 ECDSA private key.
-# 		(This is the default)
+# 		(This is the default.)
 #
 # type=rsa	Generate a 3072-bit RSA private key.
 #
@@ -35,16 +35,22 @@
 # challenge=<name>
 # 		Use <name> as the challenge handler.  If <name> begins
 # 		with '/' then it is an absolute path, otherwise it will
-# 		be searched for in /usr/local/share/lfacme/challenge/
+# 		be searched for in /usr/local/share/lfacme/challenge/,
 # 		then /usr/local/etc/lfacme/challenge/.
 #
-# 		One challenge script is supplied with lfacme, "kerberos",
+#		The challenge handler is passed to uacme(1), so you can use
+#		any uacme-compatible handler here.
+#
+# 		One challenge handler is supplied with lfacme, "kerberos",
 # 		which uses Kerberized nsupdate(1) to respond to dns-01
-# 		challenges.
+# 		challenges.  This is the default handler.
 
+##
 # A certificate name of "*" can be used to set the default options for any
-# following certificates.  For example, to use RSA (instead of the default
-# ECDSA) for all certificates:
+# following certificates.  Each "*" line replaces the previous default
+# options.  You can specify subject alt names here as well.
+#
+# For example, to use RSA (instead of the default ECDSA) for all certificates:
 *		type=rsa
 
 # Issue a cert for example.org using the default options.
