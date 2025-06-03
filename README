@@ -5,7 +5,7 @@ lfacme is a wrapper around uacme to make it a bit more flexible.  i wrote it
 primarily for my own use, but you're welcome to use it too.
 
 lfacme comes with challenge handlers for basic HTTP validation (http-01) and
-for DNS (dns-01) validation using Kerberized nsupdate.  it can also be used
+for DNS validation (dns-01) using Kerberized nsupdate.  it can also be used
 with any uacme-compatible challenge handler.
 
 it's only tested on FreeBSD and may or may not work on other platforms.
