@@ -22,7 +22,11 @@ if [ "$METHOD" != "dns-01" ]; then
 	exit 1
 fi
 
-if ! kinit -k -t /etc/krb5.keytab "$ACME_KERBEROS_PRINCIPAL"; then
+if [ -z "$ACME_KERBEROS_KEYTAB" ]; then
+	ACME_KERBEROS_KEYTAB="/etc/krb5.keytab"
+fi
+
+if ! kinit -k -t "$ACME_KERBEROS_KEYTAB" "$ACME_KERBEROS_PRINCIPAL"; then
 	_fatal "failed to obtain a Kerberos ticket"
 fi
 

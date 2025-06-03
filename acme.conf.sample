@@ -44,3 +44,10 @@
 # default realm is configured in /etc/krb5.conf.
 
 #ACME_KERBEROS_PRINCIPAL="host/server.example.org@EXAMPLE.ORG"
+
+### ACME_KERBEROS_KEYTAB
+# When using the "kerberos" challenge handler, this is the keytab used to
+# issue the ticket.  It must contain a key for $ACME_KERBEROS_PRINCIPAL.
+# The default is /etc/krb5.keytab.
+
+#ACME_KERBEROS_KEYTAB="/etc/krb5.keytab"
