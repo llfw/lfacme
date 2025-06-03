@@ -17,15 +17,17 @@ The following variables may be set:
 .It Va ACME_URL
 (Required.)
 The URL of the ACME server.
-.It Va ACME_DIR
-(Required.)
-The path to the base configuration directory, where certificates will be stored.
+.It Va ACME_DATADIR
+The path to the runtime datadirectory, where the ACME account key and any
+issued certificates will be stored.
+The default value is
+.Pa /var/db/lfacme .
 .It Va ACME_HOOKDIR
 The path to a directory containing hooks to invoke when issuing certificates
 (see
 .Xr domains.conf 5 ) .
 The default value is
-.Pa ${ACME_DIR}/hooks .
+.Pa /usr/local/etc/lfacme/hooks .
 .It Va ACME_KERBEROS_PRINCIPAL
 The Kerberos principal to use when responding to a
 .Dq dns-01

@@ -12,15 +12,15 @@
 #ACME_URL="https://acme-staging-v02.api.letsencrypt.org/directory"
 
 
-### ACME_DIR: The path to lfacme's configuration directory.
-# This is also where generated certificates are stored.
-# No default, you must set this.
+### ACME_DATADIR: Runtime data directory.
+# This is where the ACME account key and the issued certificates are stored.
+# The default is /var/db/lfacme.
 
-#ACME_DIR="/usr/local/etc/acme"
+#ACME_DATADIR="/var/db/lfacme"
 
 
 ### ACME_HOOKDIR: The path to the directory containing certificate hooks.
-# The default is "${ACME_DIR}/hooks".
+# The default is "/usr/local/etc/lfacme/hooks".
 # There is usually no need to change this.
 
 #ACME_HOOKDIR="/some/directory"
