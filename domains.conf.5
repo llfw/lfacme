@@ -23,6 +23,14 @@ names or options for the certificate.
 If no subject alt names are provided, then the certificate name is used as
 the common name and subject alt name.
 .Pp
+If the certificate name is
+.Dq * ,
+then this line will not cause a certificate to be issued;
+instead, any options set on this line will apply to all following lines,
+or until another line with the certificate name
+.Dq * ,
+which will replace the previously set options.
+.Pp
 The following options may be set:
 .Bl -tag -width indent
 .It Sy type Ns Li = Ns Ar keytype
@@ -67,11 +75,18 @@ This is not necessarily the certificate's common name.
 .It Sy LFACME_CERTFILE
 The path of a file which contains the public certificate and any issuer
 certificates, in PEM format.
-.It Sy lFACME_KEYFILE
+.It Sy LFACME_KEYFILE
 The path of a file which contains the private key file in PEM format.
 .El
 .El
 .Sh EXAMPLES
+Set the key type to
+.Dq rsa
+for all certificates.
+.Bd -literal -offset indent
+*	type=rsa
+.Ed
+.Pp
 Issue a certificate for
 .Dq example.org
 using the default options.

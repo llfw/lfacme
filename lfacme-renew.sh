@@ -109,7 +109,7 @@ _docert() {
 	local certfile="${dir}/${identifier}-cert.pem"
 
 	# these can be overridden by args
-	local keytype="ec"
+	local keytype=""
 	local altnames=""
 	local hooks=""
 	local domain=""
@@ -142,6 +142,11 @@ _docert() {
 	# If no altnames were given, the identifier is the domain.
 	if [ -z "$domain" ]; then
 		domain="$identifier"
+	fi
+
+	# Default key type is ec.
+	if [ -z "$keytype" ]; then
+		keytype="ec"
 	fi
 
 	# make sure all the hook scripts are valid.  if the hook name
@@ -222,11 +227,18 @@ _docert() {
 }
 
 _exit=0
+_default_args=""
 
 cat "$_DOMAINS" \
 | egrep -v '^(#|[[:space:]]*$)' \
 | while read identifier args; do
-	if ! _docert "$identifier" $args; then
+
+	if [ "$identifier" = "*" ]; then
+		_default_args="$args"
+		continue
+	fi
+
+	if ! _docert "$identifier" $_default_args $args; then
 		_exit=1
 	fi
 done
