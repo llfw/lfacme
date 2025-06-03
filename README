@@ -6,7 +6,8 @@ primarily for my own use, but you're welcome to use it too.
 
 currently, there is one major limitation: the only supported domain validation
 method is dns-01 with Kerberized nsupdate.  patches to improve this would be
-welcome.
+welcome.  if you don't want to use Kerberos, you can provide your own
+uacme-compatible challenge handler, or just use one from uacme itself.
 
 it's only tested on FreeBSD and may or may not work on other platforms.
 if it doesn't work, it shouldn't be difficult to port.
@@ -28,8 +29,9 @@ install
 usage
 -----
 
-+ make sure /etc/krb5.keytab exists since this will be used to issue the
-  Kerberos ticket for domain validation.
++ if you're using the provided "kerberos" challenge handler, make sure
+  /etc/krb5.keytab exists since this will be used to issue the Kerberos
+  ticket for domain validation.
 + create the config files (see below):
 	/usr/local/etc/uacme/acme.conf and
 	/usr/local/etc/uacme/domains.conf
@@ -46,7 +48,9 @@ known issues
   you'll need to edit the scripts.
 
 + we disable ARI in uacme (uacme --no-ari) because it's broken on non-glibc
-  platforms.  this is a uacme bug: https://github.com/ndilieto/uacme/issues/91
+  platforms.  this is a uacme bug: https://github.com/ndilieto/uacme/issues/91.
+  the only impact of this is that certificates will be renewed 30 days before
+  expiry, instead of when the ACME server wants us to renew them.
  
 config files
 ------------
@@ -59,8 +63,8 @@ there are two configuration files:
 these both come with manual pages which explain how to configure them,
 and sample configs are provided.
 
-BIND configuration
-------------------
+BIND + Kerberos configuration
+-----------------------------
 
 if you want to use the default (and only) Kerberos dns-01 challenge, you must
 configure your DNS server to accept Kerberos-authenticated nsupdates.
