@@ -25,6 +25,7 @@ _warn() {
 _BASEDIR="/usr/local"
 # Where the internal scripts are.
 _SHARE="${_BASEDIR}/share/lfacme"
+_CHALLENGE="${_SHARE}/challenge"
 
 # Our configuration directory.  This might be overridden by command-line
 # arguments.
@@ -70,4 +71,57 @@ _UACME=/usr/local/bin/uacme
 
 _uacme() {
 	"$_UACME" -a "$ACME_URL" -c "$_UACME_DIR" "$@"
+}
+
+# Find a challenge script and make sure it's valid.  If the challenge name
+# begins with a '/' it's a full path, otherwise we search $_CHALLENGE and
+# $_CONFDIR/challenge.
+_findchallenge() {
+	local identifier="$1"
+	local challenge="$2"
+	local path=""
+
+	if [ "${challenge#/*}" != "$challenge" ]; then
+		path="${challenge}"
+	elif [ -f "${_CHALLENGE}/${challenge}" ]; then
+		path="${_CHALLENGE}/${challenge}"
+	elif [ -f "${_CONFDIR}/challenge/${challenge}" ]; then
+		path="${_CONFDIR}/challenge/${challenge}"
+	else
+		_error "%s: could not find challenge script '%s'" \
+			"$identifier" "$challenge"
+		return 1
+	fi
+
+	if ! [ -x "$path" ]; then
+		_error "%s: challenge is not executable: %s" \
+			"$identifier" "$path"
+		return 1
+	fi
+
+	echo "$path"
+}
+
+# Find a hook script and make sure it's valid.  If the hook name begins with a
+# '/' it's a full path, otherwise it's relative to ACME_HOOKDIR.
+_findhook() {
+	hook="$1"
+
+	if [ "${hook#/*}" = "$hook" ]; then
+		hook="${ACME_HOOKDIR}/$hook"
+	fi
+
+	if ! [ -f "$hook" ]; then
+		_error "%s: hook does not exist: %s" \
+			"$identifier" "$hook"
+		return 1
+	fi
+
+	if ! [ -x "$hook" ]; then
+		_error "%s: hook is not executable: %s" \
+			"$identifier" "$hook"
+		return 1
+	fi
+
+	echo "$hook"
 }

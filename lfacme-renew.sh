@@ -113,6 +113,7 @@ _docert() {
 	local altnames=""
 	local hooks=""
 	local domain=""
+	local challenge=""
 
 	# parse arguments for this cert
 	while ! [ -z "$1" ]; do
@@ -123,6 +124,7 @@ _docert() {
 					"$identifier" "${1#type=*}"
 				return 1;;
 		hook=*)		hooks="$hooks ${1#hook=*}";;
+		challenge=*)	challenge="${1#challenge=*}";;
 		*=*)		_error "%s: unknown option: %s" \
 					"$identifier" "$1"
 				return 1;;
@@ -149,28 +151,28 @@ _docert() {
 		keytype="ec"
 	fi
 
+	# Default challenge is kerberos.
+	if [ -z "$challenge" ]; then
+		challenge="kerberos"
+	fi
+
+	# make sure the challenge is valid.
+	challenge_path="$(_findchallenge "$identifier" "$challenge")"
+	if [ "$?" -ne 0 ]; then
+		return 1
+	fi
+
 	# make sure all the hook scripts are valid.  if the hook name
-	# begins with a '/' it's a full path, otherwise it's related to
-	# ACME_HOOKDIR.
+	# begins with a '/' it's a full path, otherwise it's relative
+	# to ACME_HOOKDIR.
 	local _rhooks=""
 	for hook in $hooks; do
-		if [ "${hook#/*}" = "$hook" ]; then
-			hook="${ACME_HOOKDIR}/$hook"
-		fi
-
-		if ! [ -f "$hook" ]; then
-			_error "%s: hook does not exist: %s" \
-				"$identifier" "$hook"
+		local _hookpath="$(_findhook "$identifier" "$hook")"
+		if [ "$?" -ne 0 ]; then
 			return 1
 		fi
 
-		if ! [ -x "$hook" ]; then
-			_error "%s: hook is not executable: %s" \
-				"$identifier" "$hook"
-			return 1
-		fi
-
-		_rhooks="$_rhooks $hook"
+		_rhooks="$_rhooks $_hookpath"
 	done
 
 	mkdir -p -m0700 "$dir"
@@ -186,8 +188,8 @@ _docert() {
 		return 1
 	fi
 
-	_uacme $_uacme_flags 				\
-		-h "${_SHARE}/kerberos-challenge.sh"	\
+	_uacme $_uacme_flags 		\
+		-h "$challenge_path"	\
 		 issue "$csrfile"
 	_ret=$?
 

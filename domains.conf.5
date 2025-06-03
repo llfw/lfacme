@@ -44,6 +44,23 @@ to generate a secp384r1 ECDSA key, or
 to generate a 3072-bit RSA key.
 If not specified, the default value is
 .Dq ec .
+.It Sy challenge Ns Li = Ns Ar filename
+Invoke
+.Ar filename
+to handle ACME challenges for this certificate.
+If
+.Ar filename
+begins with a
+.Sq /
+character, then it is assumed to be an absolute path,
+otherwise it will be searched for in
+.Pa /usr/local/share/lfacme/challenge
+and
+.Pa /usr/local/etc/lfacme/challenge .
+.Pp
+The challenge script is passed to
+.Xr uacme 1 ;
+see the uacme documentation for details on the calling convention.
 .It Sy hook Ns Li = Ns Ar filename
 Invoke
 .Ar filename
@@ -66,7 +83,7 @@ which may be one of the following:
 A certificate has been issued or renewed.
 .El
 .Pp
-The following environment variables will be when running the hook script:
+The following environment variables will be set when running the hook script:
 .Bl -tag -width LFACME_CERTFILE
 .It Sy LFACME_CERT
 The identifier of the certificate, i.e. the first field in
