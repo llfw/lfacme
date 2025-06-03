@@ -67,10 +67,20 @@ BIND + Kerberos configuration
 -----------------------------
 
 if you want to use the default (and only) Kerberos dns-01 challenge, you must
-configure your DNS server to accept Kerberos-authenticated nsupdates.
+configure your DNS server to accept Kerberos-authenticated dynamic updates.
 
-in BIND, an update policy like this will allow any host to update ACME
-challenges for its own hostname:
+first, tell BIND where to load its Kerberos keytab from:
+
+options {
+        tkey-gssapi-keytab "/usr/local/etc/namedb/krb5.keytab";
+};
+
+the keytab MUST contain a server key for "DNS/name.of.server@<realm>", where
+"name.of.server" MUST be the SOA MNAME for the zone(s) you want to update.
+this is not configurable, it's a requirement of how the protocol works.
+
+an update policy like this will allow any host to update ACME challenges for
+its own hostname:
 
 	update-policy {
 		# note: "EXAMPLE.ORG" is the Kerberos realm, not the DNS zone!
