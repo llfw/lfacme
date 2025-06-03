@@ -32,6 +32,11 @@
 #		otherwise it is relative to $ACME_HOOKDIR.
 #		This option may be given multiple times.
 
+# A certificate name of "*" can be used to set the default options for any
+# following certificates.  For example, to use RSA (instead of the default
+# ECDSA) for all certificates:
+*		type=rsa
+
 # Issue a cert for example.org using the default options.
 # We don't provide any SANs, so the certificate name is used as the domain.
 example.org
