@@ -1,3 +1,5 @@
+# This source code is released into the public domain.
+
 PREFIX?=	/usr/local
 LIBDIR?=	${DESTDIR}/${PREFIX}/share/lfacme
 BINDIR?=	${DESTDIR}/${PREFIX}/sbin

@@ -1,4 +1,6 @@
 #! /bin/sh
+# This source code is released into the public domain.
+#
 # An example hook.
 
 # Action is always 'newcert', at least for now.
