@@ -71,9 +71,9 @@ configure your DNS server to accept Kerberos-authenticated dynamic updates.
 
 first, tell BIND where to load its Kerberos keytab from:
 
-options {
-        tkey-gssapi-keytab "/usr/local/etc/namedb/krb5.keytab";
-};
+	options {
+		tkey-gssapi-keytab "/usr/local/etc/namedb/krb5.keytab";
+	};
 
 the keytab MUST contain a server key for "DNS/name.of.server@<realm>", where
 "name.of.server" MUST be the SOA MNAME for the zone(s) you want to update.
