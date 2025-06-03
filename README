@@ -1,5 +1,5 @@
 lfacme: a simple ACME client based on uacme
--------------------------------------------
+===========================================
 
 lfacme is a wrapper around uacme to make it a bit more flexible.  i wrote it
 primarily for my own use, but you're welcome to use it too.
@@ -11,7 +11,8 @@ welcome.
 it's only tested on FreeBSD and may or may not work on other platforms.
 if it doesn't work, it shouldn't be difficult to port.
 
-requirements:
+requirements
+------------
 
 + POSIX-compatible /bin/sh
 + uacme (in FreeBSD: security/uacme)
@@ -19,11 +20,13 @@ requirements:
 + BIND's "dig" and "nsupdate" (in FreeBSD: dns/bind-tools)
 + Kerberos kinit (either MIT or Heimdal should work)
 
-install:
+install
+-------
 
 # make install [DESTDIR=/some/where]
 
-usage:
+usage
+-----
 
 + make sure /etc/krb5.keytab exists since this will be used to issue the
   Kerberos ticket for domain validation.
@@ -36,7 +39,8 @@ usage:
   it's fine to run this once a day, since it won't renew certificates unless
   they're going to expire soon.
 
-known issues:
+known issues
+------------
 
 + lfacme assumes it's installed in /usr/local.  if you want to change this,
   you'll need to edit the scripts.
@@ -44,7 +48,8 @@ known issues:
 + we disable ARI in uacme (uacme --no-ari) because it's broken on non-glibc
   platforms.  this is a uacme bug: https://github.com/ndilieto/uacme/issues/91
  
-config files:
+config files
+------------
 
 there are two configuration files:
 
@@ -53,3 +58,30 @@ there are two configuration files:
 
 these both come with manual pages which explain how to configure them,
 and sample configs are provided.
+
+BIND configuration
+------------------
+
+if you want to use the default (and only) Kerberos dns-01 challenge, you must
+configure your DNS server to accept Kerberos-authenticated nsupdates.
+
+in BIND, an update policy like this will allow any host to update ACME
+challenges for its own hostname:
+
+	update-policy {
+		# note: "EXAMPLE.ORG" is the Kerberos realm, not the DNS zone!
+		grant EXAMPLE.ORG krb5-selfsub . TXT;
+	};
+
+or to let a specific host update some other records:
+
+	update-policy {
+		grant "host/server.example.org@EXAMPLE.ORG"
+			name _acme-challenge.example.org. TXT;
+
+		grant "host/server.example.org@EXAMPLE.ORG"
+			name _acme-challenge.www.example.org. TXT;
+	};
+
+this might also work with the Microsoft Windows DNS server,
+but that hasn't been tested.
