@@ -36,8 +36,8 @@ usage
 -----
 
 + create the config files (see below):
-	/usr/local/etc/uacme/acme.conf and
-	/usr/local/etc/uacme/domains.conf
+	/usr/local/etc/lfacme/acme.conf and
+	/usr/local/etc/lfacme/domains.conf
 + run "lfacme-setup" to create an ACME account
 + run "lfacme-renew" to issue certificates
 + put "lfacme-renew" in cron if you want to renew certificates automatically.
