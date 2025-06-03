@@ -14,9 +14,6 @@ TOKEN=$4
 # The token value we need to create.
 AUTH=$5
 
-#set
-#exit 1
-
 if [ "$#" -ne 5 ]; then
 	_fatal "missing arguments"
 fi
@@ -92,11 +89,11 @@ _wait_for_nameserver() {
 
 	echo "waiting for $domain on nameserver $ns..."
 
-	waited=0
-	waitlimit=60
+	local waited=0
+	local waitlimit=60
 	while sleep 1; do
 		waited=$((waited + 1))
-		if [ $waited -ge $waitlimit ]; then
+		if [ "$waited" -ge "$waitlimit" ]; then
 			_error "timed out waiting for nameserver update for %s" \
 				"$domain"
 			return 1
@@ -129,7 +126,7 @@ _wait_for_record() {
 case "$ACTION" in
 	begin)
 		_add_record "$DOMAIN" "$AUTH" \
-			&& _wait_for_record "$DOMAIN" "$AUTH"
+		&& _wait_for_record "$DOMAIN" "$AUTH"
 		exit $?
 		;;
 
@@ -142,5 +139,3 @@ case "$ACTION" in
 		_fatal "unknown action: %s" "$ACTION"
 		;;
 esac
-
-
