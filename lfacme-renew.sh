@@ -151,9 +151,9 @@ _docert() {
 		keytype="ec"
 	fi
 
-	# Default challenge is kerberos.
+	# Default challenge is http.
 	if [ -z "$challenge" ]; then
-		challenge="kerberos"
+		challenge="http"
 	fi
 
 	# make sure the challenge is valid.

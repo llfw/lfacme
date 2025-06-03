@@ -62,6 +62,26 @@ and
 The challenge script is passed to
 .Xr uacme 1 ;
 see the uacme documentation for details on the calling convention.
+.Pp
+Two challenge scripts are provided with
+.Nm lfacme :
+.Bl -tag -width kerberos
+.It Sy http
+Use HTTP-based validation.
+This requires
+.Va ACME_HTTP_CHALLENGE_DIR
+to be set in
+.Xr acme.conf 5 .
+This is the default challenge handler.
+.It Sy kerberos
+Use DNS-based validation with
+.Xr nsupdate 1
+using Kerberos authentication.
+This requires
+.Va ACME_KERBEROS_PRINCIPAL
+to be set in
+.Xr acme.conf 5 .
+.El
 .It Sy hook Ns Li = Ns Ar filename
 Invoke
 .Ar filename

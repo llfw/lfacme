@@ -41,9 +41,8 @@
 #		The challenge handler is passed to uacme(1), so you can use
 #		any uacme-compatible handler here.
 #
-# 		One challenge handler is supplied with lfacme, "kerberos",
-# 		which uses Kerberized nsupdate(1) to respond to dns-01
-# 		challenges.  This is the default handler.
+#		Two handlers are supplied with lfacme: "http" and "kerberos".
+#		The default handler is "http".
 
 ##
 # A certificate name of "*" can be used to set the default options for any
