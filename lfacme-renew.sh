@@ -1,17 +1,8 @@
 #! /bin/sh
 # This source code is released into the public domain.
 
-. /usr/local/share/lfacme/init.sh
-
-if ! [ -d "$_UACME_DIR" ]; then
-	_fatal "run lfacme-setup first"
-fi
-
-if ! [ -f "$_DOMAINS" ]; then
-	_fatal "missing $_DOMAINS"
-fi
-
-args=$(getopt v $*)
+# Parse command-line arguments.
+args=$(getopt c:v $*)
 if [ $? -ne 0 ]; then
 	exit 1
 fi
@@ -22,13 +13,27 @@ _uacme_flags="--no-ari"
 
 while :; do
 	case "$1" in
+	-c)
+		_CONFDIR="$2"
+		shift; shift;;
 	-v)
-		_uacme_flags="$_uacme_flags -v"
+		_uacme_flags="$_uacme_flags $1"
 		shift;;
 	--)
 		shift; break;;
 	esac
 done
+
+# Initialise.
+. /usr/local/share/lfacme/init.sh
+
+if ! [ -f "$_UACME_DIR/private/key.pem" ]; then
+	_fatal "run lfacme-setup first"
+fi
+
+if ! [ -f "$_DOMAINS" ]; then
+	_fatal "missing $_DOMAINS"
+fi
 
 # Create a key if it doesn't already exist.  It would be better to always
 # create a new key here, but currently uacme doesn't have a way to tell us

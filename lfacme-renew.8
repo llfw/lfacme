@@ -7,6 +7,8 @@
 .Nd issue or renew ACME certificates
 .Sh SYNOPSIS
 .Nm
+.Op Fl v
+.Op Fl c Ar confdir
 .Sh DESCRIPTION
 The
 .Nm
@@ -21,6 +23,20 @@ An ACME account must be created using
 .Xr lfacme-setup 8
 before running
 .Nm .
+.Pp
+The follow options are accepted:
+.Bl -tag -width indent
+.It Fl c Ar confdir
+Use
+.Ar confdir
+as the configuration directory instead of the default
+.Pa /usr/local/etc/lfacme .
+.It Fl v
+Produce more output when running.
+This also passes the
+.Fl v
+option to uacme.
+.El
 .Sh SEE ALSO
 .Xr domains.conf 5 ,
 .Xr lfacme-setup 8

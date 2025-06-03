@@ -1,8 +1,31 @@
 #! /bin/sh
 # This source code is released into the public domain.
 
+# Parse command-line arguments.
+args=$(getopt c:vy $*)
+if [ $? -ne 0 ]; then
+	exit 1
+fi
+set -- $args
+
+_uacme_flags=""
+
+while :; do
+	case "$1" in
+	-c)
+		_CONFDIR="$2"
+		shift; shift;;
+	-v|-y)
+		_uacme_flags="$_uacme_flags $1"
+		shift;;
+	--)
+		shift; break;;
+	esac
+done
+
+# Initialise.
 . /usr/local/share/lfacme/init.sh
 
+# Run uacme.
 mkdir -p "$_UACME_DIR"
-
-_uacme new
+_uacme $_uacme_flags new
