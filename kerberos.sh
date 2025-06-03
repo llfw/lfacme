@@ -102,14 +102,16 @@ _wait_for_nameserver() {
 			return 1
 		fi
 
-		data="$(dig "_acme-challenge.$domain" txt @$nameserver +short)"
-		if [ -z "$data" ]; then
-			continue
-		fi
-
-		if [ "$data" = "\"$auth\"" ]; then
-			return 0
-		fi
+		local _rdatas="$(
+			dig "_acme-challenge.$domain" txt @$nameserver \
+				+noall +answer \
+			| awk '$4 == "TXT" { print $5 }'
+		)"
+		for rdata in $_rdatas; do
+			if [ "$rdata" = "\"$auth\"" ]; then
+				return 0
+			fi
+		done
 	done
 }
 
