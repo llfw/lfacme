@@ -1,0 +1,55 @@
+lfacme: a simple ACME client based on uacme
+-------------------------------------------
+
+lfacme is a wrapper around uacme to make it a bit more flexible.  i wrote it
+primarily for my own use, but you're welcome to use it too.
+
+currently, there is one major limitation: the only supported domain validation
+method is dns-01 with Kerberized nsupdate.  patches to improve this would be
+welcome.
+
+it's only tested on FreeBSD and may or may not work on other platforms.
+if it doesn't work, it shouldn't be difficult to port.
+
+requirements:
+
++ POSIX-compatible /bin/sh
++ uacme (in FreeBSD: security/uacme)
++ OpenSSL command-line tool
++ BIND's "dig" and "nsupdate" (in FreeBSD: dns/bind-tools)
++ Kerberos kinit (either MIT or Heimdal should work)
+
+install:
+
+# make install [DESTDIR=/some/where]
+
+usage:
+
++ make sure /etc/krb5.keytab exists since this will be used to issue the
+  Kerberos ticket for domain validation.
++ create the config files (see below):
+	/usr/local/etc/uacme/acme.conf and
+	/usr/local/etc/uacme/domains.conf
++ run "lfacme-setup" to create an ACME account
++ run "lfacme-renew" to issue certificates
++ put "lfacme-renew" in cron if you want to renew certificates automatically.
+  it's fine to run this once a day, since it won't renew certificates unless
+  they're going to expire soon.
+
+known issues:
+
++ lfacme assumes it's installed in /usr/local.  if you want to change this,
+  you'll need to edit the scripts.
+
++ we disable ARI in uacme (uacme --no-ari) because it's broken on non-glibc
+  platforms.  this is a uacme bug: https://github.com/ndilieto/uacme/issues/91
+ 
+config files:
+
+there are two configuration files:
+
++ acme.conf configures the global behaviour of lfacme
++ domains.conf lists the certificates lfacme should issue
+
+these both come with manual pages which explain how to configure them,
+and sample configs are provided.

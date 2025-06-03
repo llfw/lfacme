@@ -1,0 +1,33 @@
+# This is a sample configuration file for lfacme.  It is a shell script,
+# so you can include other files or call programs here if you like.
+
+
+### ACME_URL: The URL of the ACME server.
+# No default, you must set this.
+
+# Let's Encrypt production::
+#ACME_URL="https://acme-v02.api.letsencrypt.org/directory"
+
+# Let's Encrypt staging:
+#ACME_URL="https://acme-staging-v02.api.letsencrypt.org/directory"
+
+
+### ACME_DIR: The path to lfacme's configuration directory.
+# This is also where generated certificates are stored.
+# No default, you must set this.
+
+#ACME_DIR="/usr/local/etc/acme"
+
+
+### ACME_HOOKDIR: The path to the directory containing certificate hooks.
+# The default is "${ACME_DIR}/hooks".
+# There is usually no need to change this.
+
+#ACME_HOOKDIR="/some/directory"
+
+
+### ACME_KERBEROS_PRINCIPAL: The Kerberos principal we use for nsupdate.
+# The default is "host/$(hostname)", which assumes a default realm is
+# configured in /etc/krb5.conf.
+
+#ACME_KERBEROS_PRINCIPAL="host/server.example.org@EXAMPLE.ORG"

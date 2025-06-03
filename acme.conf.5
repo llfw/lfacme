@@ -1,0 +1,39 @@
+.\" This source code is released into the public domain.
+.Dd June 3, 2025
+.Dt ACME.CONF 5
+.Os
+.Sh NAME
+.Nm acme.conf
+.Nd lfacme global configuration file
+.Sh SYNOPSIS
+.Pa /usr/local/etc/lfacme/acme.conf
+.Sh DESCRIPTION
+The
+.Nm
+file is a shell script used to configure the global behaviour of
+.Nm lfacme .
+The following variables may be set:
+.Bl -tag -width indent
+.It Va ACME_URL
+(Required.)
+The URL of the ACME server.
+.It Va ACME_DIR
+(Required.)
+The path to the base configuration directory, where certificates will be stored.
+.It Va ACME_HOOKDIR
+The path to a directory containing hooks to invoke when issuing certificates
+(see
+.Xr domains.conf 5 ) .
+The default value is
+.Pa ${ACME_DIR}/hooks .
+.It Va ACME_KERBEROS_PRINCIPAL
+The Kerberos principal to use when responding to a
+.Dq dns-01
+challenge.
+The default value is
+.Dq host/$(hostname) .
+.El
+.Sh SEE ALSO
+.Xr domains.conf 5 ,
+.Xr lfacme-setup 8 ,
+.Xr lfacme-renew 8

@@ -1,0 +1,105 @@
+.\" This source code is released into the public domain.
+.Dd June 3, 2025
+.Dt DOMAINS.CONF 5
+.Os
+.Sh NAME
+.Nm domains.conf
+.Nd lfacme domains configuration file
+.Sh SYNOPSIS
+.Pa /usr/local/etc/lfacme/domains.conf
+.Sh DESCRIPTION
+The
+.Nm
+file is used to configure the certificates that
+.Nm lfacme
+will issue or renew.
+Each line specifies one certificate as a series of whitespace-separated fields.
+The first field is the certificate name, which is used internally by
+.Nm lfacme
+in the certificate filename, but is not part of the certificate itself.
+The remaining fields are certificate options, which may be either subject alt
+names or options for the certificate.
+.Pp
+If no subject alt names are provided, then the certificate name is used as
+the common name and subject alt name.
+.Pp
+The following options may be set:
+.Bl -tag -width indent
+.It Sy type Ns Li = Ns Ar keytype
+Configure the private key type.
+The
+.Ar keytype
+argument may be
+.Dq ec
+to generate a secp384r1 ECDSA key, or
+.Dq rsa
+to generate a 3072-bit RSA key.
+If not specified, the default value is
+.Dq ec .
+.It Sy hook Ns Li = Ns Ar filename
+Invoke
+.Ar filename
+when this certificate is issued or renewed.
+If
+.Ar filename
+begins with a
+.Sq /
+character, then it is assumed to be an absolute path,
+otherwise it is relative to the
+.Va ACME_HOOKDIR
+configured in
+.Xr acme.conf 5 .
+This option may be specified multiple times.
+.Pp
+The hook will be called with a single argument,
+which may be one of the following:
+.Bl -tag -width newcert
+.It Sy newcert
+A certificate has been issued or renewed.
+.El
+.Pp
+The following environment variables will be when running the hook script:
+.Bl -tag -width LFACME_CERTFILE
+.It Sy LFACME_CERT
+The identifier of the certificate, i.e. the first field in
+.Nm .
+This is not necessarily the certificate's common name.
+.It Sy LFACME_CERTFILE
+The path of a file which contains the public certificate and any issuer
+certificates, in PEM format.
+.It Sy lFACME_KEYFILE
+The path of a file which contains the private key file in PEM format.
+.El
+.El
+.Sh EXAMPLES
+Issue a certificate for 
+.Dq example.org
+using the default options.
+We don't provide any SANs, so the certificate name is used as the domain.
+.Bd -literal -offset indent
+example.org
+.Ed
+.Pp
+Issue a certificate for
+.Dq example.org
+with some SANs.
+Notice that because we specify one SAN, we now have to specify all of them.
+.Bd -literal -offset indent
+example.org	example.org www.example.org
+.Ed
+.Pp
+Issue two certificates for an SMTP server, one EC and one RSA.
+Some older SMTP clients still don't like EC certs.
+Run a hook after the certificate is (re)issued.
+.Bd -literal -offset indent
+smtp-ec		smtp.example.org	type=ec  hook=install-smtp-cert
+smtp-rsa	smtp.example.org	type=rsa hook=install-smtp-cert
+.Ed
+.Pp
+Issue a certificate for a server and run multiple hooks.
+.Bd -literal -offset indent
+server.example.org	hook=nginx hook=postfix hook=node-exporter
+.Ed
+.Sh SEE ALSO
+.Xr acme.conf 5 ,
+.Xr lfacme-renew 8

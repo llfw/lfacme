@@ -1,0 +1,20 @@
+.\" This source code is released into the public domain.
+.Dd June 3, 2025
+.Dt LFACME-SETUP 8
+.Os
+.Sh NAME
+.Nm lfacme-setup
+.Nd create a new ACME account
+.Sh SYNOPSIS
+.Nm
+.Sh DESCRIPTION
+The
+.Nm
+utility will register a new account with the ACME provider configured in
+.Xr acme.conf 5 .
+If the provider requires accepting terms of service to create an account,
+the ToS URL will be printed and
+.Nm
+will prompt the user to accept them.
+.Sh SEE ALSO
+.Xr acme.conf 5

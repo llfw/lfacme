@@ -1,0 +1,26 @@
+.\" This source code is released into the public domain.
+.Dd June 3, 2025
+.Dt LFACME-RENEW 8
+.Os
+.Sh NAME
+.Nm lfacme-renew
+.Nd issue or renew ACME certificates
+.Sh SYNOPSIS
+.Nm
+.Sh DESCRIPTION
+The
+.Nm
+utility examines the ACME certificates configured in
+.Xr domains.conf 5 .
+If a certificate was previously issued and is still valid for longer than 30
+days, it will be ignored.
+Otherwise, the certificate will be issued or renewed and any configured hook
+scripts will be invoked.
+.Pp
+An ACME account must be created using
+.Xr lfacme-setup 8
+before running
+.Nm .
+.Sh SEE ALSO
+.Xr domains.conf 5 ,
+.Xr lfacme-setup 8

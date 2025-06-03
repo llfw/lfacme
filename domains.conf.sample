@@ -1,0 +1,50 @@
+##
+# Domains configuration file for lfacme.
+#
+# This is NOT a shell script (unlike acme.conf) so you cannot use shell
+# syntax here.
+#
+# Empty lines and lines beginning with a '#' character are ignored.
+
+##
+# Each line specifies one certificate using one or more whitespace-separated
+# fields.
+#
+# The first field is the certificate name, which is only used internally by
+# lfacme and is not part of the certificate.
+#
+# The remaining fields are certificate options, which may be either subject alt
+# names or options for the certificate.
+#
+# If no subject alt names are provided, then the certificate name is used as
+# the common name and subject alt name.
+
+##
+# Supported options:
+#
+# type=ec	Generate a secp384r1 ECDSA private key.
+# 		(This is the default)
+#
+# type=rsa	Generate a 3072-bit RSA private key.
+#
+# hook=<name>	Run the hook '<name>' after (re)issuing this certificate.
+#		If <name> begins with a '/' then it is an absolute path,
+#		otherwise it is relative to $ACME_HOOKDIR.
+#		This option may be given multiple times.
+
+# Issue a cert for example.org using the default options.
+# We don't provide any SANs, so the certificate name is used as the domain.
+example.org
+
+# Issue a cert for example.org with some SANs.
+# Notice that because we specify one SAN, we now have to specify all of them.
+example.org	example.org www.example.org
+
+# Issue two certs for an SMTP server, one EC and one RSA.
+# Some older SMTP clients still don't like EC certs.
+# Run a hook after the certificate is (re)issued.
+smtp-ec		smtp.example.org	type=ec  hook=install-smtp-cert
+smtp-rsa	smtp.example.org	type=rsa hook=install-smtp-cert
+
+# Issue a certificate for a server and run multiple hooks.
+server.example.org	hook=nginx hook=postfix hook=node-exporter
