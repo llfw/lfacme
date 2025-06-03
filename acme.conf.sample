@@ -5,7 +5,7 @@
 ### ACME_URL: The URL of the ACME server.
 # No default, you must set this.
 
-# Let's Encrypt production::
+# Let's Encrypt production:
 #ACME_URL="https://acme-v02.api.letsencrypt.org/directory"
 
 # Let's Encrypt staging:
