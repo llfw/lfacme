@@ -27,10 +27,16 @@ _BASEDIR="/usr/local"
 _SHARE="${_BASEDIR}/share/lfacme"
 _CHALLENGE="${_SHARE}/challenge"
 
-# Our configuration directory.  This might be overridden by command-line
-# arguments.
+# Our configuration directory.  If $_CONFDIR is already set, then the script
+# wants to provide its own config directory, probably from a command line
+# argument.  Otherwise if $LFACME_CONFDIR is set, we're running in a hook
+# script, so use that as the config directory.  Otherwise, use the default.
 if [ -z "$_CONFDIR" ]; then
-	_CONFDIR="${_BASEDIR}/etc/lfacme"
+	if ! [ -z "$LFACME_CONFDIR" ]; then
+		_CONFDIR="$LFACME_CONFDIR"
+	else
+		_CONFDIR="${_BASEDIR}/etc/lfacme"
+	fi
 fi
 
 # Our configuration file.
@@ -70,7 +76,8 @@ _UACME_DIR="${ACME_DATADIR}/certs"
 _UACME=/usr/local/bin/uacme
 
 _uacme() {
-	"$_UACME" -a "$ACME_URL" -c "$_UACME_DIR" "$@"
+	env "LFACME_CONFDIR=${_CONFDIR}" \
+		"$_UACME" -a "$ACME_URL" -c "$_UACME_DIR" "$@"
 }
 
 # Find a challenge script and make sure it's valid.  If the challenge name

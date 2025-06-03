@@ -214,7 +214,8 @@ _docert() {
 	# otherwise, exit code is 0 which means we (re)issued the cert,
 	# so run the hooks.
 	for hook in $_rhooks; do
-		env	"LFACME_CERT=${identifier}"	\
+		env	"LFACME_CONFDIR=${_CONFDIR}"	\
+			"LFACME_CERT=${identifier}"	\
 			"LFACME_KEYFILE=${keyfile}"	\
 			"LFACME_CERTFILE=${certfile}"	\
 			$hook newcert
