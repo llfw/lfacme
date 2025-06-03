@@ -19,7 +19,6 @@ if [ "$#" -ne 5 ]; then
 fi
 
 if [ "$METHOD" != "http-01" ]; then
-	_warn "skip method %s" "$METHOD"
 	exit 1
 fi
 
