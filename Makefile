@@ -9,7 +9,7 @@ MAN5DIR?=	${MANDIR}/man5
 MAN8DIR?=	${MANDIR}/man8
 HOOKDIR?=	${CONFDIR}/hooks
 
-LIBMODE?=	0644
+LIBMODE?=	0755
 LIB_FILES=	init.sh \
 		kerberos-challenge.sh
 
