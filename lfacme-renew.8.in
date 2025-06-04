@@ -7,7 +7,7 @@
 .Nd issue or renew ACME certificates
 .Sh SYNOPSIS
 .Nm
-.Op Fl v
+.Op Fl fv
 .Op Fl c Ar confdir
 .Sh DESCRIPTION
 The
@@ -31,6 +31,8 @@ Use
 .Ar confdir
 as the configuration directory instead of the default
 .Pa __CONFDIR__ .
+.It Fl f
+Force renewal of certificates, even if they're not going to expire soon.
 .It Fl v
 Produce more output when running.
 This also passes the

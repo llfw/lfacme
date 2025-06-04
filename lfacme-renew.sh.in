@@ -2,7 +2,7 @@
 # This source code is released into the public domain.
 
 # Parse command-line arguments.
-args=$(getopt c:v $*)
+args=$(getopt c:fv $*)
 if [ $? -ne 0 ]; then
 	exit 1
 fi
@@ -16,6 +16,9 @@ while :; do
 	-c)
 		_CONFDIR="$2"
 		shift; shift;;
+	-f)
+		_uacme_flags="$_uacme_flags -f"
+		shift;;
 	-v)
 		LFACME_VERBOSE=1
 		shift;;
