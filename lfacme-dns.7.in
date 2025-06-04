@@ -36,7 +36,7 @@ to create this record.
 The DNS update will be sent to the zone's master server (determined by the
 MNAME field in the SOA record), and will be authenticated using the TSIG
 key file configured by
-.Ar ACME_DNS_KEYFILE
+.Ar LFACME_DNS_KEYFILE
 in
 .Xr acme.conf 5 .
 .Pp
@@ -47,19 +47,19 @@ The
 challenge hook supports the following configuration options in
 .Xr acme.conf 5 :
 .Bl -tag -width indent
-.It Va ACME_DNS_KEYFILE
+.It Va LFACME_DNS_KEYFILE
 (Required.)
 The key file that will be passed to
 .Xr nsupdate 1
 to authenticate the DNS update.
-.It Va ACME_DNS_DIG
+.It Va LFACME_DNS_DIG
 Path to the
 .Xr dig 1
 program.
 If not specified,
 .Ev $PATH
 will be searched.
-.It Va ACME_DNS_NSUPDATE
+.It Va LFACME_DNS_NSUPDATE
 Path to the
 .Xr nsupdate 1
 program.

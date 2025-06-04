@@ -1,7 +1,7 @@
 #! /bin/sh
 # This source code is released into the public domain.
 
-_OPENSSL="$(_findbin openssl $ACME_OPENSSL)"
+_OPENSSL="$(_findbin openssl $LFACME_OPENSSL)"
 
 # Parse command-line arguments.
 args=$(getopt f $*)
@@ -175,7 +175,7 @@ _docert() {
 
 	# make sure all the hook scripts are valid.  if the hook name
 	# begins with a '/' it's a full path, otherwise it's relative
-	# to ACME_HOOKDIR.
+	# to LFACME_HOOKDIR.
 	local _rhooks=""
 	for hook in $hooks; do
 		local _hookpath="$(_findhook "$identifier" "$hook")"

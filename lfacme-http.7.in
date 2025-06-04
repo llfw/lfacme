@@ -32,7 +32,7 @@ When
 .Nm
 responds to the challenge, it will place the token in the directory configured
 by
-.Ar ACME_HTTP_CHALLENGE_DIR
+.Ar LFACME_HTTP_CHALLENGE_DIR
 in
 .Xr acme.conf 5 .
 This directory must be mapped to the appropriate path on the web server for
@@ -43,7 +43,7 @@ The
 challenge hook supports the following configuration options in
 .Xr acme.conf 5 :
 .Bl -tag -width indent
-.It Va ACME_HTTP_CHALLENGE_DIR
+.It Va LFACME_HTTP_CHALLENGE_DIR
 (Required.)
 The directory to place the challenge tokens in.
 The contents of this directory should be served at the path

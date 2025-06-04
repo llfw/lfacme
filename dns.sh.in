@@ -23,8 +23,8 @@ if [ "$METHOD" != "dns-01" ]; then
 	exit 1
 fi
 
-if [ -z "$ACME_DNS_KEYFILE" ]; then
-	_fatal "ACME_DNS_KEYFILE not configured"
+if [ -z "$LFACME_DNS_KEYFILE" ]; then
+	_fatal "LFACME_DNS_KEYFILE not configured"
 fi
 
 # Add a new record using nsupdate.
@@ -32,7 +32,7 @@ _add_record() {
 	local domain="$1"
 	local auth="$2"
 
-	$_NSUPDATE -k "$ACME_DNS_KEYFILE" <<EOF
+	$_NSUPDATE -k "$LFACME_DNS_KEYFILE" <<EOF
 update add _acme-challenge.${DOMAIN}. 300 IN TXT "${AUTH}"
 send
 EOF
@@ -44,7 +44,7 @@ _remove_record() {
 	local domain="$1"
 	local auth="$2"
 
-	$_NSUPDATE -k "$ACME_DNS_KEYFILE" <<EOF
+	$_NSUPDATE -k "$LFACME_DNS_KEYFILE" <<EOF
 update delete _acme-challenge.${DOMAIN}. 300 IN TXT "${AUTH}"
 send
 EOF

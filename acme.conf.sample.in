@@ -9,31 +9,31 @@
 # These options are used by lfacme itself.
 
 
-### ACME_URL
+### LFACME_URL
 # The URL of the ACME server.
 # No default, you must set this.
 
 # Let's Encrypt production:
-#ACME_URL="https://acme-v02.api.letsencrypt.org/directory"
+#LFACME_URL="https://acme-v02.api.letsencrypt.org/directory"
 
 # Let's Encrypt staging:
-#ACME_URL="https://acme-staging-v02.api.letsencrypt.org/directory"
+#LFACME_URL="https://acme-staging-v02.api.letsencrypt.org/directory"
 
 
-### ACME_DATADIR
+### LFACME_DATADIR
 # Runtime data directory.
 # This is where the ACME account key and the issued certificates are stored.
 # The default is /var/db/lfacme.
 
-#ACME_DATADIR="/var/db/lfacme"
+#LFACME_DATADIR="/var/db/lfacme"
 
 
-### ACME_HOOKDIR
+### LFACME_HOOKDIR
 # The path to the directory containing certificate hooks.
 # The default is "__CONFDIR__/hooks".
 # There is usually no need to change this.
 
-#ACME_HOOKDIR="/some/directory"
+#LFACME_HOOKDIR="/some/directory"
 
 
 #######################################################################
@@ -42,13 +42,13 @@
 # These options are used for the "http" challenge.
 
 
-### ACME_HTTP_CHALLENGE_DIR
+### LFACME_HTTP_CHALLENGE_DIR
 # When using the "http" challenge handler, this is the directory which contains
 # ACME challenges.  This must be served at /.well-known/acme-challenge on any
 # domain using http validation.
 # No default; you must set this if you use the "http" handler.
 
-#ACME_HTTP_CHALLENGE_DIR="/var/www/acme-challenge"
+#LFACME_HTTP_CHALLENGE_DIR="/var/www/acme-challenge"
 
 
 #######################################################################
@@ -57,11 +57,11 @@
 # These options are used for the "dns" challenge.
 
 
-### ACME_DNS_KEYFILE
+### LFACME_DNS_KEYFILE
 # Path to the TSIG key nsupdate will use to authenticate the update.
 # No default; you must configure this when using the dns challenge.
 
-#ACME_DNS_KEYFILE="/path/to/key"
+#LFACME_DNS_KEYFILE="/path/to/key"
 
 
 #######################################################################
@@ -70,17 +70,17 @@
 # These options are used for the "kerberos" challenge.
 
 
-### ACME_KERBEROS_PRINCIPAL
+### LFACME_KERBEROS_PRINCIPAL
 # When using the "kerberos" challenge handler, this is the Kerberos principal
 # we use for nsupdate.  The default is "host/$(hostname)", which assumes a
 # default realm is configured in /etc/krb5.conf.
 
-#ACME_KERBEROS_PRINCIPAL="host/server.example.org@EXAMPLE.ORG"
+#LFACME_KERBEROS_PRINCIPAL="host/server.example.org@EXAMPLE.ORG"
 
 
-### ACME_KERBEROS_KEYTAB
+### LFACME_KERBEROS_KEYTAB
 # When using the "kerberos" challenge handler, this is the keytab used to
-# issue the ticket.  It must contain a key for $ACME_KERBEROS_PRINCIPAL.
+# issue the ticket.  It must contain a key for $LFACME_KERBEROS_PRINCIPAL.
 # The default is /etc/krb5.keytab.
 
-#ACME_KERBEROS_KEYTAB="/etc/krb5.keytab"
+#LFACME_KERBEROS_KEYTAB="/etc/krb5.keytab"

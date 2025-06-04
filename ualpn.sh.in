@@ -22,7 +22,7 @@ if [ "$METHOD" != "tls-alpn-01" ]; then
 	exit 1
 fi
 
-_UALPN="$(_findbin ualpn $ACME_UALPN)"
+_UALPN="$(_findbin ualpn $LFACME_UALPN)"
 
 case "$ACTION" in
 	begin)

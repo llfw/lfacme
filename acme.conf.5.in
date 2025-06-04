@@ -25,28 +25,28 @@ file is not required.
 .Pp
 The following configuration options are supported:
 .Bl -tag -width indent
-.It Va ACME_URL
+.It Va LFACME_URL
 (Required.)
 The URL of the ACME server.
-.It Va ACME_DATADIR
+.It Va LFACME_DATADIR
 The path to the runtime data directory, where the ACME account key and any
 issued certificates will be stored.
 The default path is
 .Pa /var/db/lfacme .
-.It Va ACME_HOOKDIR
+.It Va LFACME_HOOKDIR
 The path to a directory containing hooks to invoke when issuing certificates
 (see
 .Xr domains.conf 5 ) .
 The default path is
 .Pa __CONFDIR__/hooks .
-.It Va ACME_OPENSSL
+.It Va LFACME_OPENSSL
 Path to the
 .Xr openssl 1
 program.
 If not specified,
 .Ev $PATH
 will be searched.
-.It Va ACME_UACME
+.It Va LFACME_UACME
 Path to the
 .Xr uacme 1
 program.

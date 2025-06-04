@@ -39,7 +39,7 @@ The
 challenge hook supports the following configuration options in
 .Xr acme.conf 5 :
 .Bl -tag -width indent
-.It Va ACME_UALPN
+.It Va LFACME_UALPN
 Path to the
 .Xr ualpn 1
 program.

@@ -15,7 +15,7 @@ TOKEN=$4
 # The token value we need to create.
 AUTH=$5
 
-_KINIT="$(_findbin kinit $ACME_KERBEROS_KINIT)"
+_KINIT="$(_findbin kinit $LFACME_KERBEROS_KINIT)"
 
 if [ "$#" -ne 5 ]; then
 	_fatal "missing arguments"
@@ -25,20 +25,20 @@ if [ "$METHOD" != "dns-01" ]; then
 	exit 1
 fi
 
-if [ -z "$ACME_KERBEROS_PRINCIPAL" ]; then
-	ACME_KERBEROS_PRINCIPAL="host/$(hostname)"
+if [ -z "$LFACME_KERBEROS_PRINCIPAL" ]; then
+	LFACME_KERBEROS_PRINCIPAL="host/$(hostname)"
 fi
 
-if [ -z "$ACME_KERBEROS_KEYTAB" ]; then
-	ACME_KERBEROS_KEYTAB="/etc/krb5.keytab"
+if [ -z "$LFACME_KERBEROS_KEYTAB" ]; then
+	LFACME_KERBEROS_KEYTAB="/etc/krb5.keytab"
 fi
 
-if ! [ -r "$ACME_KERBEROS_KEYTAB" ]; then
+if ! [ -r "$LFACME_KERBEROS_KEYTAB" ]; then
 	_fatal "keytab does not exist (or is not readable): %s" \
-		"$ACME_KERBEROS_KEYTAB"
+		"$LFACME_KERBEROS_KEYTAB"
 fi
 
-if ! $_KINIT -k -t "$ACME_KERBEROS_KEYTAB" "$ACME_KERBEROS_PRINCIPAL"; then
+if ! $_KINIT -k -t "$LFACME_KERBEROS_KEYTAB" "$LFACME_KERBEROS_PRINCIPAL"; then
 	_fatal "failed to obtain a Kerberos ticket"
 fi
 

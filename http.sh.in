@@ -22,15 +22,15 @@ if [ "$METHOD" != "http-01" ]; then
 	exit 1
 fi
 
-if [ -z "$ACME_HTTP_CHALLENGE_DIR" ]; then
-	_fatal "must set ACME_HTTP_CHALLENGE_DIR"
+if [ -z "$LFACME_HTTP_CHALLENGE_DIR" ]; then
+	_fatal "must set LFACME_HTTP_CHALLENGE_DIR"
 fi
 
-if ! [ -d "$ACME_HTTP_CHALLENGE_DIR" ]; then
-	_fatal "missing $ACME_HTTP_CHALLENGE_DIR"
+if ! [ -d "$LFACME_HTTP_CHALLENGE_DIR" ]; then
+	_fatal "missing $LFACME_HTTP_CHALLENGE_DIR"
 fi
 
-_file="${ACME_HTTP_CHALLENGE_DIR}/${TOKEN}"
+_file="${LFACME_HTTP_CHALLENGE_DIR}/${TOKEN}"
 
 case "$ACTION" in
 	begin)

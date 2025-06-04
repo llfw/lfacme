@@ -66,22 +66,22 @@ if [ -f "$_CONFIG" ]; then
 	. "$_CONFIG"
 fi
 
-if [ -z "$ACME_URL" ]; then
-	_fatal "missing configuration setting: ACME_URL"
+if [ -z "$LFACME_URL" ]; then
+	_fatal "missing configuration setting: LFACME_URL"
 fi
 
-if [ -z "$ACME_DATADIR" ]; then
-	ACME_DATADIR="/var/db/lfacme"
+if [ -z "$LFACME_DATADIR" ]; then
+	LFACME_DATADIR="/var/db/lfacme"
 fi
 
-if [ -z "$ACME_HOOKDIR" ]; then
-	ACME_HOOKDIR="${_CONFDIR}/hooks"
+if [ -z "$LFACME_HOOKDIR" ]; then
+	LFACME_HOOKDIR="${_CONFDIR}/hooks"
 fi
 
 # Create our data directory.
-if [ ! -d "$ACME_DATADIR" ]; then
-	_info "creating directory %s" "$ACME_DATADIR"
-	mkdir -p "$ACME_DATADIR"
+if [ ! -d "$LFACME_DATADIR" ]; then
+	_info "creating directory %s" "$LFACME_DATADIR"
+	mkdir -p "$LFACME_DATADIR"
 	if [ "$?" -ne 0 ]; then
 		exit 1
 	fi
@@ -123,10 +123,10 @@ _findbin() {
 }
 
 # uacme's base directory; this is where it puts certificates.
-_UACME_DIR="${ACME_DATADIR}/certs"
+_UACME_DIR="${LFACME_DATADIR}/certs"
 
 # The uacme executable.
-_UACME="$(_findbin uacme $ACME_UACME)"
+_UACME="$(_findbin uacme $LFACME_UACME)"
 
 _LFACME_UACME_FLAGS=""
 if ! [ -z "$LFACME_VERBOSE" ]; then
@@ -137,7 +137,7 @@ _uacme() {
 	env	"LFACME_CONFDIR=${_CONFDIR}"		\
 		"LFACME_VERBOSE=${LFACME_VERBOSE}"	\
 		"$_UACME" $_LFACME_UACME_FLAGS 		\
-		-a "$ACME_URL" -c "$_UACME_DIR" "$@"
+		-a "$LFACME_URL" -c "$_UACME_DIR" "$@"
 }
 
 # Find a challenge script and make sure it's valid.  If the challenge name
@@ -170,13 +170,13 @@ _findchallenge() {
 }
 
 # Find a hook script and make sure it's valid.  If the hook name begins with a
-# '/' it's a full path, otherwise it's relative to ACME_HOOKDIR.
+# '/' it's a full path, otherwise it's relative to LFACME_HOOKDIR.
 _findhook() {
 	local identifier="$1"
 	local hook="$2"
 
 	if [ "${hook#/*}" = "$hook" ]; then
-		hook="${ACME_HOOKDIR}/$hook"
+		hook="${LFACME_HOOKDIR}/$hook"
 	fi
 
 	if ! [ -f "$hook" ]; then

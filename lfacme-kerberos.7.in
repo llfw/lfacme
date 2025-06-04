@@ -43,7 +43,7 @@ Before sending the update,
 will retrieve a Kerberos ticket using
 .Xr kinit 1
 for the principal configured by
-.Ar ACME_KERBEROS_PRINCIPAL
+.Ar LFACME_KERBEROS_PRINCIPAL
 in
 .Xr acme.conf 5 .
 .Sh CONFIGURATION
@@ -52,34 +52,34 @@ The
 challenge hook supports the following configuration options in
 .Xr acme.conf 5 :
 .Bl -tag -width indent
-.It Va ACME_KERBEROS_PRINCIPAL
+.It Va LFACME_KERBEROS_PRINCIPAL
 The Kerberos principal to authenticate as when sending the DNS update.
 The default value is
 .Dq host/$(hostname) ,
 which assumes a default realm has been configured in
 .Pa /etc/krb5.conf .
 Explicitly configuring the principal is recommended, but not required.
-.It Va ACME_KERBEROS_KEYTAB
+.It Va LFACME_KERBEROS_KEYTAB
 The keytab used to issue the Kerberos ticket.
 This must contain a key for the principal configured by
-.Va ACME_KERBEROS_PRINCIPAL .
+.Va LFACME_KERBEROS_PRINCIPAL .
 The default value is
 .Pa /etc/krb5.keytab .
-.It Va ACME_KERBEROS_KINIT
+.It Va LFACME_KERBEROS_KINIT
 Path to the
 .Xr kinit 1
 program.
 If not specified,
 .Ev $PATH
 will be searched.
-.It Va ACME_DNS_DIG
+.It Va LFACME_DNS_DIG
 Path to the
 .Xr dig 1
 program.
 If not specified,
 .Ev $PATH
 will be searched.
-.It Va ACME_DNS_NSUPDATE
+.It Va LFACME_DNS_NSUPDATE
 Path to the
 .Xr nsupdate 1
 program.

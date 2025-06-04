@@ -2,8 +2,8 @@
 #
 # Utility functions for DNS-based authorizations.
 
-_DIG="$(_findbin dig $ACME_DNS_DIG)"
-_NSUPDATE="$(_findbin nsupdate $ACME_DNS_NSUPDATE)"
+_DIG="$(_findbin dig $LFACME_DNS_DIG)"
+_NSUPDATE="$(_findbin nsupdate $LFACME_DNS_NSUPDATE)"
 
 # Retrieve the nameservers for a given domain.  On failure, prints an error
 # message and exits.
