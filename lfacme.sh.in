@@ -32,7 +32,7 @@ done
 # Run the command.
 
 _command="$1"; shift
-if [ -z "$command" ]; then
+if [ -z "$_command" ]; then
 	_fatal "missing command"
 fi
 
