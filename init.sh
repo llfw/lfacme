@@ -73,7 +73,7 @@ if [ -z "$ACME_KERBEROS_PRINCIPAL" ]; then
 fi
 
 if [ -z "$ACME_HOOKDIR" ]; then
-	ACME_HOOKDIR="${ACME_CONFDIR}/hooks"
+	ACME_HOOKDIR="${_CONFDIR}/hooks"
 fi
 
 # The domains.conf file.
@@ -129,7 +129,8 @@ _findchallenge() {
 # Find a hook script and make sure it's valid.  If the hook name begins with a
 # '/' it's a full path, otherwise it's relative to ACME_HOOKDIR.
 _findhook() {
-	hook="$1"
+	local identifier="$1"
+	local hook="$2"
 
 	if [ "${hook#/*}" = "$hook" ]; then
 		hook="${ACME_HOOKDIR}/$hook"
