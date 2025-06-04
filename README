@@ -14,48 +14,46 @@ if it doesn't work, it shouldn't be difficult to port.
 requirements
 ------------
 
-+ POSIX-compatible /bin/sh
-+ uacme (in FreeBSD: security/uacme)
-+ OpenSSL command-line tool
-
-if you want to use the HTTP challenge handler:
-
-+ a web server installed on the host
-
-if you want to use the DNS challenge handlers:
-
-+ BIND's "dig" and "nsupdate" (in FreeBSD: dns/bind-tools)
-
-if you want to use the Kerberos DNS challenge handler:
-
-+ Kerberos kinit (either MIT or Heimdal should work)
++ POSIX-compatible /bin/sh.
++ OpenSSL command-line tool.
++ uacme (in FreeBSD: security/uacme).
++ if you want to use the provided DNS-based validation scripts,
+  BIND's "dig" and "nsupdate" tools (in FreeBSD: dns/bind-tools).
 
 install
 -------
 
-# make install [PREFIX=/usr/local] [DESTDIR=/some/where]
+simply run:
+
+	# make install [PREFIX=/usr/local] [DESTDIR=/some/where]
 
 PREFIX is the base directory to install into.  if not specified, /usr/local
 is assumed.
 
-DESTDIR is prepend to PREFIX when installing files, and may be used when
+DESTDIR is prepended to PREFIX when installing files, and may be used when
 creating packages.
 
-a FreeBSD periodic(8) script is provided as "900.lfacme.sh" and will be
-installed automatically on FreeBSD.  to run lfacme-renew once a day to
-renew certificates, set "daily_lfacme_enable=YES" in /etc/periodic.conf.
+some other variables (like CONFDIR) can also be set; see Makefile for a
+complete list.  for example, for an SVR4-style installation:
+
+	# make install PREFIX=/opt/lfacme CONFDIR=/etc/opt/lfacme
+
+a FreeBSD periodic(8) script is provided and will be installed automatically
+on FreeBSD.  to run lfacme-renew once a day to renew certificates, set
+"daily_lfacme_enable=YES" in /etc/periodic.conf.
 
 usage
 -----
 
-+ create the config files (see below):
-	/usr/local/etc/lfacme/acme.conf and
-	/usr/local/etc/lfacme/domains.conf
++ create the config files (see below)
 + run "lfacme-setup" to create an ACME account
 + run "lfacme-renew" to issue certificates
 + put "lfacme-renew" in cron if you want to renew certificates automatically.
   it's fine to run this once a day, since it won't renew certificates unless
   they're going to expire soon.
+
+the lfacme documentation is provided as online manual pages; see lfacme(7)
+to begin with.
 
 known issues
 ------------
@@ -76,39 +74,9 @@ there are two configuration files:
 these both come with manual pages which explain how to configure them,
 and sample configs are provided.
 
-BIND + Kerberos configuration
------------------------------
+questions, comments?
+--------------------
 
-if you want to use the provided Kerberos dns-01 challenge, you must configure
-your DNS server to accept Kerberos-authenticated dynamic updates.
-
-first, tell BIND where to load its Kerberos keytab from:
-
-	options {
-		tkey-gssapi-keytab "/usr/local/etc/namedb/krb5.keytab";
-	};
-
-the keytab MUST contain a server key for "DNS/name.of.server@<realm>", where
-"name.of.server" MUST be the SOA MNAME for the zone(s) you want to update.
-this is not configurable, it's a requirement of how the protocol works.
-
-an update policy like this will allow any host to update ACME challenges for
-its own hostname:
-
-	update-policy {
-		# note: "EXAMPLE.ORG" is the Kerberos realm, not the DNS zone!
-		grant EXAMPLE.ORG krb5-selfsub . TXT;
-	};
-
-or to let a specific host update some other records:
-
-	update-policy {
-		grant "host/server.example.org@EXAMPLE.ORG"
-			name _acme-challenge.example.org. TXT;
-
-		grant "host/server.example.org@EXAMPLE.ORG"
-			name _acme-challenge.www.example.org. TXT;
-	};
-
-this might also work with the Microsoft Windows DNS server,
-but that hasn't been tested.
+send any feedback (bugs, feature requests or patches) to lexi@le-fay.org.
+alternatively, you can create an issue in the GitHub repository at
+https://github.com/llfw/lfacme.

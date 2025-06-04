@@ -1,8 +1,8 @@
 # This source code is released into the public domain.
 
-.PHONY:	default all install install-lib install-bin install-conf \
-	install-hook install-man install-periodic
-.SUFFIXES: .5 .5.in .7 .7.in .8 .8.in .sh .sh.in .sample .sample.in
+# These directories may be customised to change where things are installed.
+# To avoid issues when updating, consider providing the new values on the
+# make(1) command line instead of editing this file.
 
 PREFIX?=	/usr/local
 DESTDIR?=
@@ -16,6 +16,8 @@ MAN5DIR?=	${MANDIR}/man5
 MAN7DIR?=	${MANDIR}/man7
 MAN8DIR?=	${MANDIR}/man8
 HOOKDIR?=	${CONFDIR}/hooks
+
+### No user-servicable parts below this point.
 
 LIBMODE?=	0644
 LIB=		init.sh dnsutils.sh
@@ -54,6 +56,10 @@ REPLACE=	sed	-e 's,__PREFIX__,${PREFIX},g' \
 			-e 's,__CONFDIR__,${CONFDIR},g' \
 			-e 's,__LIBDIR__,${LIBDIR},g' \
 			-e 's,__BINDIR__,${BINDIR},g'
+
+.PHONY:	default all install install-lib install-bin install-conf \
+	install-hook install-man install-periodic
+.SUFFIXES: .5 .5.in .7 .7.in .8 .8.in .sh .sh.in .sample .sample.in
 
 default: all
 

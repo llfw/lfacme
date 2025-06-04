@@ -66,6 +66,32 @@ This must contain a key for the principal configured by
 The default value is
 .Pa /etc/krb5.keytab .
 .El
+.Sh DNS SERVER CONFIGURATION
+For
+.Nm
+to work, the DNS server must be configured to accept Kerberos-authenticated
+Dynamic DNS updates.
+Using ISC BIND, this can be achieved using a zone update-policy.
+For example, to allow any host in the
+.Dq EXAMPLE.ORG
+Kerberos realm to issue certificates for its own hostname
+(and subdomains thereof):
+.Bd -literal -offset indent
+update-policy {
+	grant EXAMPLE.ORG krb5-selfsub . TXT;
+};
+.Ed
+.Pp
+Or to allow a specific host to issue certificates for a different DNS label:
+.Bd -literal -offset indent
+update-policy {
+	grant "host/server.example.org@EXAMPLE.ORG"
+		name _acme-challenge.www.example.org. TXT;
+};
+.Ed
+.Pp
+Suitable configuration for other DNS servers (e.g., the Microsoft Windows
+DNS server) is left as an exercise for the reader.
 .Sh SEE ALSO
 .Xr acme.conf 5 ,
 .Xr domains.conf 5 ,
