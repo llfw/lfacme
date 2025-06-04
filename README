@@ -4,8 +4,10 @@ lfacme: a simple ACME client based on uacme
 lfacme is a wrapper around uacme to make it a bit more flexible.  i wrote it
 primarily for my own use, but you're welcome to use it too.
 
-lfacme comes with challenge handlers for basic HTTP validation (http-01) and
-for DNS validation (dns-01) using TSIG- or Kerberos-authenticated nsupdate.
+lfacme comes with challenge handlers for basic HTTP validation (http-01),
+DNS validation (dns-01) using TSIG- or Kerberos-authenticated nsupdate,
+and TLS validation (tls-alpn-01) using uacme's ualpn proxy.
+
 it can also be used with any uacme-compatible challenge handler.
 
 it's only tested on FreeBSD and may or may not work on other platforms.
