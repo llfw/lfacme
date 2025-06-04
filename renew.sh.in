@@ -226,8 +226,7 @@ _docert() {
 	# so run the hooks.
 	for hook in $_rhooks; do
 		_verbose "running hook: %s" "$hook"
-		env	"LFACME_CONFDIR=${_CONFDIR}"		\
-			"LFACME_VERBOSE=${LFACME_VERBOSE}"	\
+		env	"LFACME_VERBOSE=${LFACME_VERBOSE}"	\
 			"LFACME_CERT=${identifier}"		\
 			"LFACME_KEYFILE=${keyfile}"		\
 			"LFACME_CERTFILE=${certfile}"		\

@@ -45,20 +45,16 @@ _BASEDIR="__PREFIX__"
 _SHARE="${_BASEDIR}/share/lfacme"
 _CHALLENGE="${_SHARE}/challenge"
 
-# Our configuration directory.  If $_CONFDIR is already set, then the script
-# wants to provide its own config directory, probably from a command line
-# argument.  Otherwise if $LFACME_CONFDIR is set, we're running in a hook
-# script, so use that as the config directory.  Otherwise, use the default.
-if [ -z "$_CONFDIR" ]; then
-	if ! [ -z "$LFACME_CONFDIR" ]; then
-		_CONFDIR="$LFACME_CONFDIR"
-	else
-		_CONFDIR="${_BASEDIR}/etc/lfacme"
-	fi
+# Our configuration directory.  If $LFACME_CONFDIR is already set, it came from
+# the environment or a command line option, so keep the existing value.
+if [ -z "$LFACME_CONFDIR" ]; then
+	LFACME_CONFDIR="__CONFDIR__"
 fi
+# Export this so it's available to hooks.
+export LFACME_CONFDIR
 
 # Our configuration file.
-_CONFIG="${_CONFDIR}/acme.conf"
+_CONFIG="${LFACME_CONFDIR}/acme.conf"
 
 # Read and validate the configuration file.
 
@@ -75,7 +71,7 @@ if [ -z "$LFACME_DATADIR" ]; then
 fi
 
 if [ -z "$LFACME_HOOKDIR" ]; then
-	LFACME_HOOKDIR="${_CONFDIR}/hooks"
+	LFACME_HOOKDIR="${LFACME_CONFDIR}/hooks"
 fi
 
 # Create our data directory.
@@ -88,7 +84,7 @@ if [ ! -d "$LFACME_DATADIR" ]; then
 fi
 
 # The domains.conf file.
-_DOMAINS="${_CONFDIR}/domains.conf"
+_DOMAINS="${LFACME_CONFDIR}/domains.conf"
 
 # Find a program based on $PATH, or return the second argument if specified.
 # If the program isn't found, print an error and exit.
@@ -134,15 +130,14 @@ if ! [ -z "$LFACME_VERBOSE" ]; then
 fi
 
 _uacme() {
-	env	"LFACME_CONFDIR=${_CONFDIR}"		\
-		"LFACME_VERBOSE=${LFACME_VERBOSE}"	\
+	env	"LFACME_VERBOSE=${LFACME_VERBOSE}"	\
 		"$_UACME" $_LFACME_UACME_FLAGS 		\
 		-a "$LFACME_URL" -c "$_UACME_DIR" "$@"
 }
 
 # Find a challenge script and make sure it's valid.  If the challenge name
 # begins with a '/' it's a full path, otherwise we search $_CHALLENGE and
-# $_CONFDIR/challenge.
+# $LFACME_CONFDIR/challenge.
 _findchallenge() {
 	local identifier="$1"
 	local challenge="$2"
@@ -152,8 +147,8 @@ _findchallenge() {
 		path="${challenge}"
 	elif [ -f "${_CHALLENGE}/${challenge}" ]; then
 		path="${_CHALLENGE}/${challenge}"
-	elif [ -f "${_CONFDIR}/challenge/${challenge}" ]; then
-		path="${_CONFDIR}/challenge/${challenge}"
+	elif [ -f "${LFACME_CONFDIR}/challenge/${challenge}" ]; then
+		path="${LFACME_CONFDIR}/challenge/${challenge}"
 	else
 		_error "%s: could not find challenge script '%s'" \
 			"$identifier" "$challenge"

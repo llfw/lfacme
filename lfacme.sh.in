@@ -13,7 +13,7 @@ _uacme_flags=""
 while :; do
 	case "$1" in
 	-c)
-		_CONFDIR="$2"
+		LFACME_CONFDIR="$2"
 		shift; shift;;
 	-v)
 		LFACME_VERBOSE=1
