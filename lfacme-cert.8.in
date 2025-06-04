@@ -1,0 +1,41 @@
+.\" This source code is released into the public domain.
+.Dd June 4, 2025
+.Dt LFACME 7
+.Os
+.Sh NAME
+.Nm lfacme cert
+.Nd manage ACME certificates
+.Sh SYNOPSIS
+.Nm lfacme
+.Op opts
+.Cm cert list
+.Nm lfacme
+.Op opts
+.Cm cert remove
+.Ar certificate
+.Op Ar certificate ...
+.Sh DESCRIPTION
+The
+.Nm
+command is used to manage certificates issued by
+.Xr lfacme 8 .
+.Pp
+The following commands are supported:
+.Bl -tag -width Cm remove
+.It Cm list
+List issued certificates.
+.It Cm remove
+Remove the given certificates.
+The certificates will be deleted from the disk, but will be reissued the next
+time
+.Xr lfacme-renew 8
+is run unless they are also removed from
+.Xr domains.conf 5 .
+.Sh ENVIRONMENT
+Refer to
+.Xr lfacme 8
+for a list of environment variables which affect the operation of
+.Nm .
+.Sh SEE ALSO
+.Xr domains.conf 5 ,
+.Xr lfacme 8

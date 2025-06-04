@@ -30,7 +30,8 @@ CHALLENGE=	dns.sh \
 
 BINMODE?=	0755
 BIN=		lfacme.sh
-CMD=		renew.sh \
+CMD=		cert.sh \
+		renew.sh \
 		setup.sh
 
 CONFMODE?=	0644
@@ -48,6 +49,7 @@ MAN7=		lfacme-dns.7 \
 		lfacme-kerberos.7 \
 		lfacme-ualpn.7
 MAN8=		lfacme.8 \
+		lfacme-cert.8 \
 		lfacme-renew.8 \
 		lfacme-setup.8
 

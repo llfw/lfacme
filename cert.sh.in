@@ -1,0 +1,83 @@
+#! /bin/sh
+# This source code is released into the public domain.
+
+_c_list() {
+	if ! [ -d "$_UACME_DIR" ]; then
+		return 0
+	fi
+
+	local _certs="$(cd $_UACME_DIR && ls)"
+	local cert
+	for cert in $_certs; do
+		if [ "$cert" = "private" ]; then
+			continue
+		fi
+
+		printf '%s\n' "$cert"
+	done
+
+	return 0
+}
+
+_c_remove() {
+	if [ -z "$1" ]; then
+		_fatal "missing certificate name"
+	fi
+
+	local cert
+	for cert in "$@"; do
+		local _path="${_UACME_DIR}/${cert}"
+
+		if ! [ -d "$_path" ]; then
+			_warn "certificate not found: %s" "$cert"
+			continue
+		fi
+
+		# Just in case...
+		if [ "${_path##*/}" = "" ]; then
+			_fatal "internal error"
+		fi
+ 
+		rm -rf "$_path"
+	done
+}
+
+# Parse command-line arguments.
+args=$(getopt "" $*)
+if [ $? -ne 0 ]; then
+	exit 1
+fi
+set -- $args
+
+_uacme_flags=""
+
+while :; do
+	case "$1" in
+	-y)
+		_uacme_flags="$_uacme_flags $1"
+		shift;;
+	--)
+		shift; break;;
+	esac
+done
+
+_command="$1"; shift
+if [ -z "$_command" ]; then
+	_fatal "missing command"
+fi
+
+case "$_command" in
+list)
+	_c_list "$@"
+	exit $?
+	;;
+
+remove)
+	_c_remove "$@"
+	exit $?
+	;;
+
+*)
+	_fatal "unknown command: %s" "$_command"
+	;;
+esac
