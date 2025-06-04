@@ -9,7 +9,7 @@ DESTDIR?=
 
 LIBDIR?=	${PREFIX}/share/lfacme
 BINDIR?=	${PREFIX}/sbin
-CONFDIR?=	${PREFIX}/etc
+CONFDIR?=	${PREFIX}/etc/lfacme
 MANDIR?=	${PREFIX}/share/man
 PERIODICDIR=	${PREFIX}/etc/periodic/daily
 MAN5DIR?=	${MANDIR}/man5

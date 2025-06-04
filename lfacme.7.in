@@ -24,7 +24,7 @@ two configuration files must be created:
 and
 .Pa __CONFDIR__/domains.conf .
 Samples of both files are provided in
-.Pa __CONFDIR__lfacme .
+.Pa __CONFDIR__ .
 Refer to
 .Xr acme.conf 5
 and
