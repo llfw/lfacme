@@ -1,8 +1,8 @@
 #! /bin/sh
 # This source code is released into the public domain.
 
-. /usr/local/share/lfacme/init.sh
-. /usr/local/share/lfacme/dnsutils.sh
+. __LIBDIR__/init.sh
+. __LIBDIR__/dnsutils.sh
 
 # begin, done or failed
 ACTION=$1

@@ -3,10 +3,11 @@
 PREFIX?=	/usr/local
 DESTDIR?=
 
-LIBDIR?=	${DESTDIR}${PREFIX}/share/lfacme
-BINDIR?=	${DESTDIR}${PREFIX}/sbin
-CONFDIR?=	${DESTDIR}${PREFIX}/etc
-MANDIR?=	${DESTDIR}${PREFIX}/share/man
+LIBDIR?=	${PREFIX}/share/lfacme
+BINDIR?=	${PREFIX}/sbin
+CONFDIR?=	${PREFIX}/etc
+MANDIR?=	${PREFIX}/share/man
+PERIODICDIR=	${PREFIX}/etc/periodic/daily
 MAN5DIR?=	${MANDIR}/man5
 MAN7DIR?=	${MANDIR}/man7
 MAN8DIR?=	${MANDIR}/man8
@@ -41,80 +42,103 @@ MAN7=		lfacme.7 \
 MAN8=		lfacme-renew.8 \
 		lfacme-setup.8
 
-PERIODICDIR=	/usr/local/etc/periodic/daily
 PERIODICMODE?=	0755
 PERIODIC=	900.lfacme.sh
 
+SED?=		sed
+REPLACE=	sed	-e 's,__PREFIX__,${PREFIX},g' \
+			-e 's,__CONFDIR__,${CONFDIR},g' \
+			-e 's,__LIBDIR__,${LIBDIR},g' \
+			-e 's,__BINDIR__,${BINDIR},g'
+
 default: all
 
-all:
-	@echo "Nothing to do."
+all: ${MAN5} ${MAN7} ${MAN8} ${LIB} ${BIN} ${CHALLENGE} ${HOOK} ${PERIODIC} ${CONF}
+
+clean:
+	rm -f ${MAN5} ${MAN7} ${MAN8} ${LIB} ${BIN}
+	rm -f ${HOOK} ${CHALLENGE} ${PERIODIC} ${CONF}
+
+%.sh: %.sh.in
+	${REPLACE} <$< >$@
+
+%.sample: %.sample.in
+	${REPLACE} <$< >$@
+
+%.5: %.5.in
+	${REPLACE} <$< >$@
+
+%.7: %.7.in
+	${REPLACE} <$< >$@
+
+%.8: %.8.in
+	${REPLACE} <$< >$@
 
 install: install-lib install-bin install-conf install-hook install-man install-periodic
 
-install-lib:
-	@echo 'create ${LIBDIR}'; install -d ${LIBDIR}
+install-lib: all
+	@echo 'create ${DESTDIR}${LIBDIR}'; install -d ${DESTDIR}${LIBDIR}
 	@for lib in ${LIB}; do \
-		echo "install ${LIBDIR}/$$lib"; \
-		install -C -m ${LIBMODE} "$$lib" "${LIBDIR}/$$lib"; \
+		echo "install ${DESTDIR}${LIBDIR}/$$lib"; \
+		install -C -m ${LIBMODE} "$$lib" "${DESTDIR}${LIBDIR}/$$lib"; \
 	done
-	@echo 'create ${LIBDIR}/challenge'; install -d ${LIBDIR}/challenge;
+	@echo 'create ${DESTDIR}${LIBDIR}/challenge'; install -d ${DESTDIR}${LIBDIR}/challenge;
 	@for challenge in ${CHALLENGE}; do \
 		basename=$${challenge%*.sh}; \
-		echo "install ${LIBDIR}/challenge/$$basename"; \
+		echo "install ${DESTDIR}${LIBDIR}/challenge/$$basename"; \
 		install -C -m ${CHALLENGEMODE} "$$challenge" \
-			"${LIBDIR}/challenge/$$basename"; \
+			"${DESTDIR}${LIBDIR}/challenge/$$basename"; \
 	done
 
-install-bin:
-	@echo 'create ${BINDIR}'; install -d ${BINDIR}
+install-bin: all
+	@echo 'create ${DESTDIR}${BINDIR}'; install -d ${DESTDIR}${BINDIR}
 	@for bin in ${BIN}; do \
 		basename=$${bin%*.sh}; \
-		echo "install ${BINDIR}/$$basename"; \
-		install -C -m ${BINMODE} "$$bin" "${BINDIR}/$$basename"; \
+		echo "install ${DESTDIR}${BINDIR}/$$basename"; \
+		install -C -m ${BINMODE} "$$bin" "${DESTDIR}${BINDIR}/$$basename"; \
 	done
 
-install-conf:
-	@echo 'create ${CONFDIR}'; install -d ${CONFDIR};
+install-conf: all
+	@echo 'create ${DESTDIR}${CONFDIR}'; install -d ${DESTDIR}${CONFDIR};
 	@for conf in ${CONF}; do \
-		echo "install ${CONFDIR}/$$conf"; \
-		install -C -m ${CONFMODE} "$$conf" "${CONFDIR}/$$conf"; \
+		echo "install ${DESTDIR}${CONFDIR}/$$conf"; \
+		install -C -m ${CONFMODE} "$$conf" "${DESTDIR}${CONFDIR}/$$conf"; \
 	done
 
-install-hook:
-	@echo 'create ${HOOKDIR}'; install -d ${HOOKDIR};
+install-hook: all
+	@echo 'create ${DESTDIR}${HOOKDIR}'; install -d ${DESTDIR}${HOOKDIR};
 	@for hook in ${HOOK}; do \
 		basename=$${hook%*.sh}; \
-		echo "install ${HOOKDIR}/$$basename"; \
-		install -C -m ${HOOKMODE} "$$hook" "${HOOKDIR}/$$basename"; \
+		echo "install ${DESTDIR}${HOOKDIR}/$$basename"; \
+		install -C -m ${HOOKMODE} "$$hook" "${DESTDIR}${HOOKDIR}/$$basename"; \
 	done
 
-install-man:
-	@echo 'create ${MANDIR}'; install -d ${MANDIR}
-	@echo 'create ${MAN5DIR}'; install -d ${MAN5DIR}
+install-man: all
+	@echo 'create ${DESTDIR}${MANDIR}'; install -d ${DESTDIR}${MANDIR}
+	@echo 'create ${DESTDIR}${MAN5DIR}'; install -d ${DESTDIR}${MAN5DIR}
 	@for man in ${MAN5}; do \
-		echo "install ${MAN5DIR}/$$man"; \
-		install -C -m ${MANMODE} "$$man" "${MAN5DIR}/$$man"; \
+		echo "install ${DESTDIR}${MAN5DIR}/$$man"; \
+		install -C -m ${MANMODE} "$$man" "${DESTDIR}${MAN5DIR}/$$man"; \
 	done
-	@echo 'create ${MAN7DIR}'; install -d ${MAN7DIR}
+	@echo 'create ${DESTDIR}${MAN7DIR}'; install -d ${DESTDIR}${MAN7DIR}
 	@for man in ${MAN7}; do \
-		echo "install ${MAN7DIR}/$$man"; \
-		install -C -m ${MANMODE} "$$man" "${MAN7DIR}/$$man"; \
+		echo "install ${DESTDIR}${MAN7DIR}/$$man"; \
+		install -C -m ${MANMODE} "$$man" "${DESTDIR}${MAN7DIR}/$$man"; \
 	done
-	@echo 'create ${MAN8DIR}'; install -d ${MAN8DIR}
+	@echo 'create ${DESTDIR}${MAN8DIR}'; install -d ${DESTDIR}${MAN8DIR}
 	@for man in ${MAN8}; do \
-		echo "install ${MAN8DIR}/$$man"; \
-		install -C -m ${MANMODE} "$$man" "${MAN8DIR}/$$man"; \
+		echo "install ${DESTDIR}${MAN8DIR}/$$man"; \
+		install -C -m ${MANMODE} "$$man" "${DESTDIR}${MAN8DIR}/$$man"; \
 	done
 
-install-periodic:
+install-periodic: all
 	@if [ $$(uname) = "FreeBSD" ]; then \
-		echo 'create ${PERIODICDIR}'; install -d ${PERIODICDIR}; \
+		echo 'create ${DESTDIR}${PERIODICDIR}'; install -d ${DESTDIR}${PERIODICDIR}; \
 		for periodic in ${PERIODIC}; do \
 			basename=$${periodic%*.sh}; \
-			echo "install ${PERIODICDIR}/$$basename"; \
+			echo "install ${DESTDIR}${PERIODICDIR}/$$basename"; \
 			install -C -m ${PERIODICMODE} "$$periodic" \
-				"${PERIODICDIR}/$$basename"; \
+				"${DESTDIR}${PERIODICDIR}/$$basename"; \
 		done; \
 	fi
 

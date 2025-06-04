@@ -27,7 +27,7 @@ while :; do
 done
 
 # Initialise.
-. /usr/local/share/lfacme/init.sh
+. __LIBDIR__/init.sh
 
 # Run uacme.
 mkdir -p "$_UACME_DIR"

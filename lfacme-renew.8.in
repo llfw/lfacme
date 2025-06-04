@@ -30,7 +30,7 @@ The follow options are accepted:
 Use
 .Ar confdir
 as the configuration directory instead of the default
-.Pa /usr/local/etc/lfacme .
+.Pa __CONFDIR__ .
 .It Fl v
 Produce more output when running.
 This also passes the

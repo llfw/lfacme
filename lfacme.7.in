@@ -20,11 +20,11 @@ software using those certificates to be automatically (re)configured.
 Prior to using
 .Nm ,
 two configuration files must be created:
-.Pa /usr/local/etc/lfacme/acme.conf
+.Pa __CONFDIR__/acme.conf
 and
-.Pa /usr/local/etc/lfacme/domains.conf .
+.Pa __CONFDIR__/domains.conf .
 Samples of both files are provided in
-.Pa /usr/local/etc/lfacme .
+.Pa __CONFDIR__lfacme .
 Refer to
 .Xr acme.conf 5
 and

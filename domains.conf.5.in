@@ -6,7 +6,7 @@
 .Nm domains.conf
 .Nd lfacme domains configuration file
 .Sh SYNOPSIS
-.Pa /usr/local/etc/lfacme/domains.conf
+.Pa __CONFDIR__/domains.conf
 .Sh DESCRIPTION
 The
 .Nm
@@ -55,9 +55,9 @@ begins with a
 .Sq /
 character, then it is assumed to be an absolute path,
 otherwise it will be searched for in
-.Pa /usr/local/share/lfacme/challenge
+.Pa __LIBDIR__/challenge
 and
-.Pa /usr/local/etc/lfacme/challenge .
+.Pa __CONFDIR__/challenge .
 .Pp
 The challenge script is passed to
 .Xr uacme 1 ;
@@ -111,7 +111,7 @@ The following environment variables will be set when running the hook script:
 The
 .Nm lfacme
 configuration directory, e.g.
-.Pa /usr/local/etc/lfacme .
+.Pa __CONFDIR__ .
 .It Sy LFACME_CERT
 The identifier of the certificate, i.e. the first field in
 .Nm .

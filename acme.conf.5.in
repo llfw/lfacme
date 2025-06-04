@@ -6,7 +6,7 @@
 .Nm acme.conf
 .Nd lfacme global configuration file
 .Sh SYNOPSIS
-.Pa /usr/local/etc/lfacme/acme.conf
+.Pa __CONFDIR__/acme.conf
 .Sh DESCRIPTION
 The
 .Nm
@@ -39,7 +39,7 @@ The path to a directory containing hooks to invoke when issuing certificates
 (see
 .Xr domains.conf 5 ) .
 The default value is
-.Pa /usr/local/etc/lfacme/hooks .
+.Pa __CONFDIR__/hooks .
 .El
 .Pp
 Additional configuration variables may be used by the ACME validation hooks;

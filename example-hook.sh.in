@@ -16,8 +16,8 @@ set -e
 case "$action" in
 newcert)
 	# The certificate was issued or renewed.
-	cp "$LFACME_CERTFILE" /usr/local/etc/nginx/tls/cert.pem
-	cp "$LFACME_KEYFILE" /usr/local/etc/nginx/tls/key.pem
+	cp "$LFACME_CERTFILE" __PREFIX__/etc/nginx/tls/cert.pem
+	cp "$LFACME_KEYFILE" __PREFIX__/etc/nginx/tls/key.pem
 	nginx -s reload
 	;;
 

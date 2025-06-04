@@ -38,7 +38,7 @@ _verbose() {
 }
 
 # The prefix we're installed in.
-_BASEDIR="/usr/local"
+_BASEDIR="__PREFIX__"
 # Where the internal scripts are.
 _SHARE="${_BASEDIR}/share/lfacme"
 _CHALLENGE="${_SHARE}/challenge"
@@ -89,7 +89,7 @@ _DOMAINS="${_CONFDIR}/domains.conf"
 _UACME_DIR="${ACME_DATADIR}/certs"
 
 # The uacme executable.
-_UACME=/usr/local/bin/uacme
+_UACME=uacme
 
 _LFACME_UACME_FLAGS=""
 if ! [ -z "$LFACME_VERBOSE" ]; then

@@ -30,7 +30,7 @@
 
 ### ACME_HOOKDIR
 # The path to the directory containing certificate hooks.
-# The default is "/usr/local/etc/lfacme/hooks".
+# The default is "__CONFDIR__/hooks".
 # There is usually no need to change this.
 
 #ACME_HOOKDIR="/some/directory"

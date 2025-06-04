@@ -60,9 +60,6 @@ usage
 known issues
 ------------
 
-+ lfacme assumes it's installed in /usr/local.  if you want to change this,
-  you'll need to edit the scripts.
-
 + we disable ARI in uacme (uacme --no-ari) because it's broken on non-glibc
   platforms.  this is a uacme bug: https://github.com/ndilieto/uacme/issues/91.
   the only impact of this is that certificates will be renewed 30 days before

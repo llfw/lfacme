@@ -25,7 +25,7 @@ while :; do
 done
 
 # Initialise.
-. /usr/local/share/lfacme/init.sh
+. __LIBDIR__/init.sh
 
 if ! [ -f "$_UACME_DIR/private/key.pem" ]; then
 	_fatal "run lfacme-setup first"
