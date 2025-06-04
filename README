@@ -5,8 +5,8 @@ lfacme is a wrapper around uacme to make it a bit more flexible.  i wrote it
 primarily for my own use, but you're welcome to use it too.
 
 lfacme comes with challenge handlers for basic HTTP validation (http-01) and
-for DNS validation (dns-01) using Kerberized nsupdate.  it can also be used
-with any uacme-compatible challenge handler.
+for DNS validation (dns-01) using TSIG- or Kerberos-authenticated nsupdate.
+it can also be used with any uacme-compatible challenge handler.
 
 it's only tested on FreeBSD and may or may not work on other platforms.
 if it doesn't work, it shouldn't be difficult to port.
@@ -22,15 +22,24 @@ if you want to use the HTTP challenge handler:
 
 + a web server installed on the host
 
-if you want to use the Kerberized nsupdate challenge handler:
+if you want to use the DNS challenge handlers:
 
 + BIND's "dig" and "nsupdate" (in FreeBSD: dns/bind-tools)
+
+if you want to use the Kerberos DNS challenge handler:
+
 + Kerberos kinit (either MIT or Heimdal should work)
 
 install
 -------
 
-# make install [DESTDIR=/some/where]
+# make install [PREFIX=/usr/local] [DESTDIR=/some/where]
+
+PREFIX is the base directory to install into.  if not specified, /usr/local
+is assumed.
+
+DESTDIR is prepend to PREFIX when installing files, and may be used when
+creating packages.
 
 usage
 -----
