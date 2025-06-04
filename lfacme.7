@@ -1,0 +1,76 @@
+.\" This source code is released into the public domain.
+.Dd June 4, 2025
+.Dt LFACME 7
+.Os
+.Sh NAME
+.Nm lfacme
+.Nd issue, renew and manage ACME certificates
+.Sh SYNOPSIS
+.Nm lfacme-setup
+.Op opts
+.Nm lfacme-renew
+.Op opts
+.Sh DESCRIPTION
+The
+.Nm
+software package supports management of TLS certificates using an ACME server.
+Certificates can be automatically issued and renewed, and a hook system allows
+software using those certificates to be automatically (re)configured.
+.Pp
+Prior to using
+.Nm ,
+two configuration files must be created:
+.Pa /usr/local/etc/lfacme/acme.conf
+and
+.Pa /usr/local/etc/lfacme/domains.conf .
+Samples of both files are provided in
+.Pa /usr/local/etc/lfacme .
+Refer to
+.Xr acme.conf 5
+and
+.Xr domains.conf 5
+for more detailed documentation on these files.
+.Pp
+To perform initial setup, run
+.Xr lfacme-setup 8 .
+This will register an account on the ACME server, and create any required
+local data.
+Running
+.Xr lfacme-setup 8
+will not issue any certificates.
+.Pp
+To issue or renew certificates, run
+.Xr lfacme-renew 8 .
+This will examine the certificates configured in
+.Xr domains.conf 5 ;
+new certificates will be issued, while existing certificates will be renewed
+if necessary.
+To ensure certificates are automatically renewed when required,
+.Xr lfacme-renew 8
+should be run regularly, e.g. using
+.Xr cron 8 .
+.Sh ENVIRONMENT
+The following environment variables affect the executation of the
+.Nm
+utilities:
+.Bl -tag -width LFACME_VERBOSE
+.It Ev LFACME_CONFDIR
+Override the default configuration directory.
+This is equivalent to specifying the
+.Fl c
+flag on the command line.
+.It Ev LFACME_VERBOSE
+If set to a non-empty string, run in verbose mode.
+This is equivalent to specifying the
+.Fl v
+flag on the command line.
+.El
+.Pp
+Additionally, any configuration settings described in
+.Xr acme.conf 5
+may also be set in the environment.
+.Sh SEE ALSO
+.Xr acme.conf 5 ,
+.Xr domains.conf 5 ,
+.Xr lfacme-renew 8 ,
+.Xr lfacme-setup 8

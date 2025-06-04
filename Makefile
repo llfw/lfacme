@@ -8,6 +8,7 @@ BINDIR?=	${DESTDIR}${PREFIX}/sbin
 CONFDIR?=	${DESTDIR}${PREFIX}/etc
 MANDIR?=	${DESTDIR}${PREFIX}/share/man
 MAN5DIR?=	${MANDIR}/man5
+MAN7DIR?=	${MANDIR}/man7
 MAN8DIR?=	${MANDIR}/man8
 HOOKDIR?=	${CONFDIR}/hooks
 
@@ -32,10 +33,11 @@ HOOK=		example-hook.sh
 
 MANMODE?=	0644
 MAN5=		acme.conf.5 \
-		domains.conf.5 \
-		lfacme-dns.5 \
-		lfacme-http.5 \
-		lfacme-kerberos.5
+		domains.conf.5
+MAN7=		lfacme.7 \
+		lfacme-dns.7 \
+		lfacme-http.7 \
+		lfacme-kerberos.7
 MAN8=		lfacme-renew.8 \
 		lfacme-setup.8
 
@@ -93,6 +95,11 @@ install-man:
 	@for man in ${MAN5}; do \
 		echo "install ${MAN5DIR}/$$man"; \
 		install -C -m ${MANMODE} "$$man" "${MAN5DIR}/$$man"; \
+	done
+	@echo 'create ${MAN7DIR}'; install -d ${MAN7DIR}
+	@for man in ${MAN7}; do \
+		echo "install ${MAN7DIR}/$$man"; \
+		install -C -m ${MANMODE} "$$man" "${MAN7DIR}/$$man"; \
 	done
 	@echo 'create ${MAN8DIR}'; install -d ${MAN8DIR}
 	@for man in ${MAN8}; do \

@@ -23,6 +23,10 @@ if [ "$METHOD" != "dns-01" ]; then
 	exit 1
 fi
 
+if [ -z "$ACME_KERBEROS_PRINCIPAL" ]; then
+	ACME_KERBEROS_PRINCIPAL="host/$(hostname)"
+fi
+
 if [ -z "$ACME_KERBEROS_KEYTAB" ]; then
 	ACME_KERBEROS_KEYTAB="/etc/krb5.keytab"
 fi

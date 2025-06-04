@@ -17,6 +17,13 @@ Each option should be configured as a
 variable assignment, i.e.
 .Dq Ar option Ns = Ns Ar value .
 .Pp
+Alternatively, options may be set as environment variables prior to running
+.Nm lfacme
+utilities.
+If all required options are set in the environment, then creating the
+.Nm
+file is not required.
+.Pp
 The following configuration variables are supported:
 .Bl -tag -width indent
 .It Va ACME_URL

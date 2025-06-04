@@ -21,6 +21,12 @@ _warn() {
 	printf >&2 '%s: WARNING: %s\n' "$_PROGNAME" "$_msg"
 }
 
+_info() {
+	local _fmt=$1; shift
+	local _msg="$(printf "$_fmt" "$@")"
+	printf '%s: %s\n' "$_PROGNAME" "$_msg"
+}
+
 _verbose() {
 	if [ -z "$LFACME_VERBOSE" ]; then
 		return
@@ -54,26 +60,26 @@ _CONFIG="${_CONFDIR}/acme.conf"
 
 # Read and validate the configuration file.
 
-if ! [ -f "$_CONFIG" ]; then
-	_fatal "missing %s" "$_CONFIG"
+if [ -f "$_CONFIG" ]; then
+	. "$_CONFIG"
 fi
 
-. "$_CONFIG"
-
 if [ -z "$ACME_URL" ]; then
-	_fatal "ACME_URL must be set in %s" "$_CONFIG"
+	_fatal "missing configuration setting: ACME_URL"
 fi
 
 if [ -z "$ACME_DATADIR" ]; then
 	ACME_DATADIR="/var/db/lfacme"
 fi
 
-if [ -z "$ACME_KERBEROS_PRINCIPAL" ]; then
-	ACME_KERBEROS_PRINCIPAL="host/$(hostname)"
-fi
-
 if [ -z "$ACME_HOOKDIR" ]; then
 	ACME_HOOKDIR="${_CONFDIR}/hooks"
+fi
+
+# Create our data directory.
+if [ ! -d "$ACME_DATADIR" ]; then
+	_info "creating directory %s" "$ACME_DATADIR"
+	mkdir -p "$ACME_DATADIR"
 fi
 
 # The domains.conf file.
