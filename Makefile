@@ -1,10 +1,12 @@
 # This source code is released into the public domain.
 
 PREFIX?=	/usr/local
-LIBDIR?=	${DESTDIR}/${PREFIX}/share/lfacme
-BINDIR?=	${DESTDIR}/${PREFIX}/sbin
-CONFDIR?=	${DESTDIR}/${PREFIX}/etc
-MANDIR?=	${DESTDIR}/${PREFIX}/share/man
+DESTDIR?=	
+
+LIBDIR?=	${DESTDIR}${PREFIX}/share/lfacme
+BINDIR?=	${DESTDIR}${PREFIX}/sbin
+CONFDIR?=	${DESTDIR}${PREFIX}/etc
+MANDIR?=	${DESTDIR}${PREFIX}/share/man
 MAN5DIR?=	${MANDIR}/man5
 MAN8DIR?=	${MANDIR}/man8
 HOOKDIR?=	${CONFDIR}/hooks
