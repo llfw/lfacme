@@ -41,6 +41,10 @@ is assumed.
 DESTDIR is prepend to PREFIX when installing files, and may be used when
 creating packages.
 
+a FreeBSD periodic(8) script is provided as "900.lfacme.sh" and will be
+installed automatically on FreeBSD.  to run lfacme-renew once a day to
+renew certificates, set "daily_lfacme_enable=YES" in /etc/periodic.conf.
+
 usage
 -----
 

@@ -1,0 +1,29 @@
+#! /bin/sh
+# This source code is released into the public domain.
+#
+# Run lfacme-renew to renew ACME certificates.
+
+if [ -r /etc/defaults/periodic.conf ]; then
+	. /etc/defaults/periodic.conf
+	source_periodic_confs
+fi
+
+PATH=$PATH:/usr/local/bin:/usr/local/sbin
+export PATH
+
+# Exit if lfacme isn't installed but the periodic script was left over
+# for some reason.
+if ! [ -x /usr/local/sbin/lfacme-renew ]; then
+	exit 0
+fi
+
+case "$daily_lfacme_enable" in
+[Yy][Ee][Ss])
+	printf 'Renewing ACME certificates with lfacme:\n'
+
+	/usr/local/sbin/lfacme-renew
+	;;
+
+*)
+	;;
+esac

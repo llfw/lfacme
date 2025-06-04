@@ -39,12 +39,16 @@ MAN5=		acme.conf.5 \
 MAN8=		lfacme-renew.8 \
 		lfacme-setup.8
 
+PERIODICDIR=	/usr/local/etc/periodic/daily
+PERIODICMODE?=	0755
+PERIODIC=	900.lfacme.sh
+
 default: all
 
 all:
 	@echo "Nothing to do."
 
-install: install-lib install-bin install-conf install-hook install-man
+install: install-lib install-bin install-conf install-hook install-man install-periodic
 
 install-lib:
 	@echo 'create ${LIBDIR}'; install -d ${LIBDIR}
@@ -96,5 +100,16 @@ install-man:
 		install -C -m ${MANMODE} "$$man" "${MAN8DIR}/$$man"; \
 	done
 
+install-periodic:
+	@if [ $$(uname) = "FreeBSD" ]; then \
+		echo 'create ${PERIODICDIR}'; install -d ${PERIODICDIR}; \
+		for periodic in ${PERIODIC}; do \
+			basename=$${periodic%*.sh}; \
+			echo "install ${PERIODICDIR}/$$basename"; \
+			install -C -m ${PERIODICMODE} "$$periodic" \
+				"${PERIODICDIR}/$$basename"; \
+		done; \
+	fi
+
 .PHONY:	default all install install-lib install-bin install-conf \
-	install-hook install-man
+	install-hook install-man install-periodic
