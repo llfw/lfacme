@@ -9,6 +9,16 @@
 .Nm lfacme
 .Op Fl v
 .Op Fl c Ar confdir
+.Cm cert list
+.Nm lfacme
+.Op Fl v
+.Op Fl c Ar confdir
+.Cm cert remove
+.Ar certificate
+.Op Ar certificate ...
+.Nm lfacme
+.Op Fl v
+.Op Fl c Ar confdir
 .Cm setup
 .Op Fl y
 .Nm lfacme
@@ -16,6 +26,7 @@
 .Op Fl c Ar confdir
 .Cm renew
 .Op Fl f
+.Op Ar certificate
 .Sh DESCRIPTION
 The
 .Nm
@@ -62,6 +73,10 @@ Issue or renew any certificates based on the
 configuration file.
 See
 .Xr lfacme-renew 8 .
+.It Cm cert
+Manage installed certificates.
+See
+.Xr lfacme-cert 8 .
 .Sh ENVIRONMENT
 The following environment variables affect the executation of
 .Nm :
@@ -84,5 +99,6 @@ may also be set in the environment.
 .Sh SEE ALSO
 .Xr acme.conf 5 ,
 .Xr domains.conf 5 ,
+.Xr lfacme-cert 8 ,
 .Xr lfacme-renew 8 ,
 .Xr lfacme-setup 8
