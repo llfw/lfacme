@@ -23,12 +23,8 @@ if [ "$METHOD" != "dns-01" ]; then
 	exit 1
 fi
 
-if [ -z "$ACME_KERBEROS_KEYTAB" ]; then
-	ACME_KERBEROS_KEYTAB="/etc/krb5.keytab"
-fi
-
-if ! kinit -k -t "$ACME_KERBEROS_KEYTAB" "$ACME_KERBEROS_PRINCIPAL"; then
-	_fatal "failed to obtain a Kerberos ticket"
+if [ -z "$ACME_DNS_KEYFILE" ]; then
+	_fatal "ACME_DNS_KEYFILE not configured"
 fi
 
 # Add a new record using nsupdate.
@@ -36,7 +32,7 @@ _add_record() {
 	local domain="$1"
 	local auth="$2"
 
-	nsupdate -g <<EOF
+	nsupdate -k "$ACME_DNS_KEYFILE" <<EOF
 update add _acme-challenge.${DOMAIN}. 300 IN TXT "${AUTH}"
 send
 EOF
@@ -48,7 +44,7 @@ _remove_record() {
 	local domain="$1"
 	local auth="$2"
 
-	nsupdate -g <<EOF
+	nsupdate -k "$ACME_DNS_KEYFILE" <<EOF
 update delete _acme-challenge.${DOMAIN}. 300 IN TXT "${AUTH}"
 send
 EOF

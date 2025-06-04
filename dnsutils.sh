@@ -1,0 +1,84 @@
+# This source code is released into the public domain.
+#
+# Utility functions for DNS-based authorizations.
+
+# Retrieve the nameservers for a given domain.  On failure, prints an error
+# message and exits.
+lfacme_dns_getnameservers() {
+	local domain="$1"
+
+	# Keep removing labels from the name until we find one with nameservers.
+	local _trydomain="$domain"
+	while ! [ -z "$_trydomain" ]; do
+		if [ "$_trydomain" = "${_trydomain#*.}" ]; then
+			# If there are no dots in the domain, we couldn't
+			# find the nameservers.
+			break
+		fi
+
+		# For CNAME records, a query for NS will return the CNAME.
+		# Therefore we have to check we actually got NS records.
+		local nameservers="$(
+			dig "$_trydomain" ns +noall +answer | \
+			awk '$4 == "NS" { print $5 }'
+		)"
+
+		if ! [ -z "$nameservers" ]; then
+			echo "$nameservers"
+			return
+		fi
+
+		_trydomain="${_trydomain#*.}"
+	done
+
+	_fatal "unable to find nameservers for %s" "$_trydomain"
+}
+
+# Wait for the DNS record to appear on a specific nameserver.
+lfacme_dns_wait_for_nameserver() {
+	local domain="$1"
+	local auth="$2"
+	local nameserver="$3"
+
+	_verbose "waiting for nameserver %s" "$nameserver"
+
+	local waited=0
+	local waitlimit=60
+	while sleep 1; do
+		waited=$((waited + 1))
+		if [ "$waited" -ge "$waitlimit" ]; then
+			_error "timed out waiting for '%s' on '%s'" \
+				"$domain" "$nameserver"
+			return 1
+		fi
+
+		local _rdatas="$(
+			dig "_acme-challenge.$domain" txt @$nameserver \
+				+noall +answer \
+			| awk '$4 == "TXT" { print $5 }'
+		)"
+		for rdata in $_rdatas; do
+			if [ "$rdata" = "\"$auth\"" ]; then
+				return 0
+			fi
+		done
+	done
+}
+
+# Wait for DNS servers to have the given record.
+lfacme_dns_wait_for_record() {
+	local domain="$1"
+	local auth="$2"
+	local nameservers="$(lfacme_dns_getnameservers "$domain")"
+
+	_verbose "waiting for the DNS record '%s' to be published" "$domain"
+	for ns in $nameservers; do
+		if ! lfacme_dns_wait_for_nameserver "$domain" "$auth" "$ns"; then
+			return 1
+		fi
+	done
+
+	return 0
+}
+
+

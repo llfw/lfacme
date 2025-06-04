@@ -10,9 +10,14 @@
 .Sh DESCRIPTION
 The
 .Nm
-file is a shell script used to configure the global behaviour of
+file is used to configure the global behaviour of
 .Nm lfacme .
-The following variables may be set:
+Each option should be configured as a
+.Xr sh 1
+variable assignment, i.e.
+.Dq Ar option Ns = Ns Ar value .
+.Pp
+The following configuration variables are supported:
 .Bl -tag -width indent
 .It Va ACME_URL
 (Required.)
@@ -28,39 +33,10 @@ The path to a directory containing hooks to invoke when issuing certificates
 .Xr domains.conf 5 ) .
 The default value is
 .Pa /usr/local/etc/lfacme/hooks .
-.It Va ACME_HTTP_CHALLENGE_DIR
-The directory to store ACME challenges when responding to an
-.Dq http-01
-challenge with the
-.Dq http
-challenge handler.
-This directory must be served at
-.Dq /.well-known/acme-challenge
-on any domain which will be validated with the
-.Dq http
-handler.
-There is no default value; you must set this if you use the
-.Dq http
-handler.
-.It Va ACME_KERBEROS_PRINCIPAL
-The Kerberos principal to use when responding to a
-.Dq dns-01
-challenge with the
-.Dq kerberos
-challenge handler.
-The default value is
-.Dq host/$(hostname) .
-.It Va ACME_KERBEROS_KEYTAB
-The Kerberos keytab to use when responding to a
-.Dq dns-01
-challenge with the
-.Dq kerberos
-challenge handler.
-The keytab must contain a Kerberos key for the principal configured in
-.Va ACME_KERBEROS_PRINCIPAL .
-The default value is
-.Pa /etc/krb5.keytab .
 .El
+.Pp
+Additional configuration variables may be used by the ACME validation hooks;
+refer to the manual page for each hook for more details.
 .Sh SEE ALSO
 .Xr domains.conf 5 ,
 .Xr lfacme-renew 8 ,

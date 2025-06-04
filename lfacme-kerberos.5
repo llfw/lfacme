@@ -34,9 +34,9 @@ responds to the challenge, it will use
 .Xr nsupdate 1
 with the 
 .Fl g
-flag (enable GSS-TSIG) to create this token.
-The DNS update will be sent to the zone's master server (determined by the
-MNAME field in the SOA record).
+flag to create this token.
+The DNS update will be sent to the zone's master server, as determined by the
+MNAME field in the SOA record.
 .Pp
 Before sending the update,
 .Nm
@@ -46,10 +46,26 @@ for the principal configured by
 .Ar ACME_KERBEROS_PRINCIPAL
 in
 .Xr acme.conf 5 .
-The principal's key must exist in the Kerberos keytab configured by
-.Ar ACME_KERBEROS_KEYTAB
-(by default,
-.Pa /etc/krb5.keytab ) .
+.Sh CONFIGURATION
+The
+.Nm
+challenge hook supports the following configuration options in
+.Xr acme.conf 5 :
+.Bl -tag -width indent
+.It Va ACME_KERBEROS_PRINCIPAL
+The Kerberos principal to authenticate as when sending the DNS update.
+The default value is
+.Dq host/$(hostname) ,
+which assumes a default realm has been configured in
+.Pa /etc/krb5.conf .
+Explicitly configuring the principal is recommended, but not required.
+.It Va ACME_KERBEROS_KEYTAB
+The keytab used to issue the Kerberos ticket.
+This must contain a key for the principal configured by
+.Va ACME_KERBEROS_PRINCIPAL .
+The default value is
+.Pa /etc/krb5.keytab .
+.El
 .Sh SEE ALSO
 .Xr acme.conf 5 ,
 .Xr domains.conf 5 ,

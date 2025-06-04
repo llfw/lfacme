@@ -1,6 +1,11 @@
 # This is a sample configuration file for lfacme.  It is a shell script,
 # so you can include other files or call programs here if you like.
 
+#######################################################################
+# Base options.
+#
+# These options are used by lfacme itself.
+
 
 ### ACME_URL
 # The URL of the ACME server.
@@ -29,6 +34,12 @@
 #ACME_HOOKDIR="/some/directory"
 
 
+#######################################################################
+# lfacme-http(5) options.
+#
+# These options are used for the "http" challenge.
+
+
 ### ACME_HTTP_CHALLENGE_DIR
 # When using the "http" challenge handler, this is the directory which contains
 # ACME challenges.  This must be served at /.well-known/acme-challenge on any
@@ -38,12 +49,32 @@
 #ACME_HTTP_CHALLENGE_DIR="/var/www/acme-challenge"
 
 
+#######################################################################
+# lfacme-dns(5) options.
+#
+# These options are used for the "dns" challenge.
+
+
+### ACME_DNS_KEYFILE
+# Path to the TSIG key nsupdate will use to authenticate the update.
+# No default; you must configure this when using the dns challenge.
+
+#ACME_DNS_KEYFILE="/path/to/key"
+
+
+#######################################################################
+# lfacme-kerberos(5) options.
+#
+# These options are used for the "kerberos" challenge.
+
+
 ### ACME_KERBEROS_PRINCIPAL
 # When using the "kerberos" challenge handler, this is the Kerberos principal
 # we use for nsupdate.  The default is "host/$(hostname)", which assumes a
 # default realm is configured in /etc/krb5.conf.
 
 #ACME_KERBEROS_PRINCIPAL="host/server.example.org@EXAMPLE.ORG"
+
 
 ### ACME_KERBEROS_KEYTAB
 # When using the "kerberos" challenge handler, this is the keytab used to

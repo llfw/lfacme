@@ -10,10 +10,11 @@ MAN8DIR?=	${MANDIR}/man8
 HOOKDIR?=	${CONFDIR}/hooks
 
 LIBMODE?=	0644
-LIB=		init.sh
+LIB=		init.sh dnsutils.sh
 
 CHALLENGEMODE?=	0755
-CHALLENGE=	http.sh \
+CHALLENGE=	dns.sh \
+		http.sh \
 		kerberos.sh
 
 BINMODE?=	0755
@@ -30,6 +31,7 @@ HOOK=		example-hook.sh
 MANMODE?=	0644
 MAN5=		acme.conf.5 \
 		domains.conf.5 \
+		lfacme-dns.5 \
 		lfacme-http.5 \
 		lfacme-kerberos.5
 MAN8=		lfacme-renew.8 \

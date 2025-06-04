@@ -1,0 +1,60 @@
+.\" This source code is released into the public domain.
+.Dd June 4, 2025
+.Dt LFACME-DNS 5
+.Os
+.Sh NAME
+.Nm lfacme-dns
+.Nd validate an ACME challenge via TSIG DNS updates
+.Sh SYNOPSIS
+In
+.Xr domains.conf 5 :
+.Bd -ragged -offset indent
+.Ar domain
+challenge=dns
+.Ed
+.Sh DESCRIPTION
+The
+.Nm
+challenge hook will respond to an ACME domain validation using a DNS-based
+.Dq dns-01
+authorization with TSIG-authenticated Dynamic DNS updates.
+To use this challenge hook, configure one or more domains with
+.Dq challenge=dns
+in
+.Xr domains.conf 5 .
+.Pp
+The
+.Dq dns-01
+challenge expects the authorization token to be created as a TXT record at the
+DNS name
+.Dq _acme-challenge. Ns Ar domain .
+When
+.Nm
+responds to the challenge, it will use
+.Xr nsupdate 1
+to create this record.
+The DNS update will be sent to the zone's master server (determined by the
+MNAME field in the SOA record), and will be authenticated using the TSIG
+key file configured by
+.Ar ACME_DNS_KEYFILE
+in
+.Xr acme.conf 5 .
+.Pp
+Once validation is complete, the previously created DNS record will be removed.
+.Sh CONFIGURATION
+The
+.Nm
+challenge hook supports the following configuration options in
+.Xr acme.conf 5 :
+.Bl -tag -width indent
+.It Va ACME_DNS_KEYFILE
+(Required.)
+The key file that will be passed to
+.Xr nsupdate 1
+to authenticate the DNS update.
+.El
+.Sh SEE ALSO
+.Xr acme.conf 5 ,
+.Xr domains.conf 5 ,
+.Xr lfacme-renew 8 ,
+.Xr nsupdate 1

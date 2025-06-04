@@ -14,9 +14,9 @@ file is used to configure the certificates that
 .Nm lfacme
 will issue or renew.
 Each line specifies one certificate as a series of whitespace-separated fields.
-The first field is the certificate name, which is used internally by
+The first field is the certificate name, which is used by
 .Nm lfacme
-in the certificate filename but is not part of the certificate itself.
+to create the certificate filename but is not part of the certificate itself.
 The remaining fields are either certificate options or subject alt names for
 the certificate.
 .Pp
@@ -63,24 +63,25 @@ The challenge script is passed to
 .Xr uacme 1 ;
 see the uacme documentation for details on the calling convention.
 .Pp
-Two challenge scripts are provided with
+The following challenge scripts are provided with
 .Nm lfacme :
 .Bl -tag -width kerberos
 .It Sy http
 Use HTTP-based validation.
-This requires
-.Va ACME_HTTP_CHALLENGE_DIR
-to be set in
-.Xr acme.conf 5 .
+See
+.Xr lfacme-http 5 .
 This is the default challenge handler.
+.It Sy dns
+Use DNS-based validation with
+.Xr nsupdate 1 .
+See
+.Xr lfacme-dns 5 .
 .It Sy kerberos
 Use DNS-based validation with
 .Xr nsupdate 1
 using Kerberos authentication.
-This requires
-.Va ACME_KERBEROS_PRINCIPAL
-to be set in
-.Xr acme.conf 5 .
+See
+.Xr lfacme-kerberos 5 .
 .El
 .It Sy hook Ns Li = Ns Ar filename
 Invoke

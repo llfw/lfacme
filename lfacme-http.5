@@ -37,6 +37,19 @@ in
 .Xr acme.conf 5 .
 This directory must be mapped to the appropriate path on the web server for
 the challenge to succeed.
+.Sh CONFIGURATION
+The
+.Nm
+challenge hook supports the following configuration options in
+.Xr acme.conf 5 :
+.Bl -tag -width indent
+.It Va ACME_HTTP_CHALLENGE_DIR
+(Required.)
+The directory to place the challenge tokens in.
+The contents of this directory should be served at the path
+.Dq /.well-known/acme-challenge
+on the web server for the domain to be validated.
+.El
 .Sh SEE ALSO
 .Xr acme.conf 5 ,
 .Xr domains.conf 5 ,
