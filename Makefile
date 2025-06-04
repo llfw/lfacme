@@ -1,7 +1,7 @@
 # This source code is released into the public domain.
 
 PREFIX?=	/usr/local
-DESTDIR?=	
+DESTDIR?=
 
 LIBDIR?=	${DESTDIR}${PREFIX}/share/lfacme
 BINDIR?=	${DESTDIR}${PREFIX}/sbin
@@ -41,7 +41,7 @@ MAN8=		lfacme-renew.8 \
 
 default: all
 
-all: 
+all:
 	@echo "Nothing to do."
 
 install: install-lib install-bin install-conf install-hook install-man
