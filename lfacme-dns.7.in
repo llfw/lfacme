@@ -56,6 +56,5 @@ to authenticate the DNS update.
 .Sh SEE ALSO
 .Xr acme.conf 5 ,
 .Xr domains.conf 5 ,
-.Xr lfacme 7 ,
 .Xr lfacme-renew 8 ,
 .Xr nsupdate 1

@@ -2,7 +2,7 @@
 # This source code is released into the public domain.
 
 # Parse command-line arguments.
-args=$(getopt c:vy $*)
+args=$(getopt c:v $*)
 if [ $? -ne 0 ]; then
 	exit 1
 fi
@@ -29,6 +29,16 @@ done
 # Initialise.
 . __LIBDIR__/init.sh
 
-# Run uacme.
-mkdir -p "$_UACME_DIR"
-_uacme $_uacme_flags new
+# Run the command.
+
+_command="$1"; shift
+if [ -z "$command" ]; then
+	_fatal "missing command"
+fi
+
+_cscript="__LIBDIR__/command/${_command}.sh"
+if ! [ -x "$_cscript" ]; then
+	_fatal "unknown command: %s" "$_command"
+fi
+
+. "$_cscript"

@@ -13,7 +13,7 @@ export PATH
 
 # Exit if lfacme isn't installed but the periodic script was left over
 # for some reason.
-if ! [ -x __BINDIR__/lfacme-renew ]; then
+if ! [ -x __BINDIR__/lfacme ]; then
 	exit 0
 fi
 
@@ -21,7 +21,7 @@ case "$daily_lfacme_enable" in
 [Yy][Ee][Ss])
 	printf 'Renewing ACME certificates with lfacme:\n'
 
-	__BINDIR__/lfacme-renew
+	__BINDIR__/lfacme renew
 	;;
 
 *)

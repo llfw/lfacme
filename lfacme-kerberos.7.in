@@ -96,6 +96,5 @@ DNS server) is left as an exercise for the reader.
 .Xr acme.conf 5 ,
 .Xr domains.conf 5 ,
 .Xr kinit 1 ,
-.Xr lfacme 7 ,
 .Xr lfacme-renew 8 ,
 .Xr nsupdate 1

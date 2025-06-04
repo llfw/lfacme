@@ -46,13 +46,13 @@ usage
 -----
 
 + create the config files (see below)
-+ run "lfacme-setup" to create an ACME account
-+ run "lfacme-renew" to issue certificates
-+ put "lfacme-renew" in cron if you want to renew certificates automatically.
++ run "lfacme setup" to create an ACME account
++ run "lfacme renew" to issue certificates
++ put "lfacme renew" in cron if you want to renew certificates automatically.
   it's fine to run this once a day, since it won't renew certificates unless
   they're going to expire soon.
 
-the lfacme documentation is provided as online manual pages; see lfacme(7)
+the lfacme documentation is provided as online manual pages; see lfacme(8)
 to begin with.
 
 known issues

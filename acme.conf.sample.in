@@ -46,7 +46,7 @@
 # When using the "http" challenge handler, this is the directory which contains
 # ACME challenges.  This must be served at /.well-known/acme-challenge on any
 # domain using http validation.
-# No default, you must set this if you use the "http" handler.
+# No default; you must set this if you use the "http" handler.
 
 #ACME_HTTP_CHALLENGE_DIR="/var/www/acme-challenge"
 

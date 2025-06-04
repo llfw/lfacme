@@ -3,16 +3,17 @@
 .Dt LFACME-SETUP 8
 .Os
 .Sh NAME
-.Nm lfacme-setup
+.Nm lfacme setup
 .Nd create a new ACME account
 .Sh SYNOPSIS
-.Nm
-.Op Fl vy
-.Op Fl c Ar confdir
+.Nm lfacme
+.Op opts
+.Cm setup
+.Op Fl y
 .Sh DESCRIPTION
 The
 .Nm
-utility will register a new account with the ACME provider configured in
+command will register a new account with the ACME provider configured in
 .Xr acme.conf 5 .
 If the provider requires accepting terms of service to create an account,
 the ToS URL will be printed and
@@ -21,19 +22,8 @@ will prompt the user to accept them.
 .Pp
 The follow options are accepted:
 .Bl -tag -width indent
-.It Fl c Ar confdir
-Use
-.Ar confdir
-as the configuration directory instead of the default
-.Pa __CONFDIR__ .
-.It Fl v
-Produce more output when running.
-This also passes the
-.Fl v
-option to uacme.
 .It Fl y
-If the ACME provider requires accepting terms of service,
-accept the provided terms automatically.
+Accept any required terms of service automatically.
 .El
 .Sh ENVIRONMENT
 Refer to
@@ -42,4 +32,4 @@ for a list of environment variables which affect the operation of
 .Nm .
 .Sh SEE ALSO
 .Xr acme.conf 5 ,
-.Xr lfacme 7
+.Xr lfacme 8

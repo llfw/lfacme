@@ -29,8 +29,9 @@ CHALLENGE=	dns.sh \
 		ualpn.sh
 
 BINMODE?=	0755
-BIN=		lfacme-renew.sh \
-		lfacme-setup.sh
+BIN=		lfacme.sh
+CMD=		renew.sh \
+		setup.sh
 
 CONFMODE?=	0644
 CONF=		acme.conf.sample \
@@ -42,12 +43,12 @@ HOOK=		example-hook.sh
 MANMODE?=	0644
 MAN5=		acme.conf.5 \
 		domains.conf.5
-MAN7=		lfacme.7 \
-		lfacme-dns.7 \
+MAN7=		lfacme-dns.7 \
 		lfacme-http.7 \
 		lfacme-kerberos.7 \
 		lfacme-ualpn.7
-MAN8=		lfacme-renew.8 \
+MAN8=		lfacme.8 \
+		lfacme-renew.8 \
 		lfacme-setup.8
 
 PERIODICMODE?=	0755
@@ -65,10 +66,10 @@ REPLACE=	sed	-e 's,__PREFIX__,${PREFIX},g' \
 
 default: all
 
-all: ${MAN5} ${MAN7} ${MAN8} ${LIB} ${BIN} ${CHALLENGE} ${HOOK} ${PERIODIC} ${CONF}
+all: ${MAN5} ${MAN7} ${MAN8} ${LIB} ${BIN} ${CMD} ${CHALLENGE} ${HOOK} ${PERIODIC} ${CONF}
 
 clean:
-	rm -f ${MAN5} ${MAN7} ${MAN8} ${LIB} ${BIN}
+	rm -f ${MAN5} ${MAN7} ${MAN8} ${LIB} ${BIN} ${CMD}
 	rm -f ${HOOK} ${CHALLENGE} ${PERIODIC} ${CONF}
 
 .sh.in.sh:
@@ -86,7 +87,7 @@ clean:
 .8.in.8:
 	${REPLACE} <$< >$@
 
-install: install-lib install-bin install-conf install-hook install-man install-periodic
+install: install-lib install-bin install-cmd install-conf install-hook install-man install-periodic
 
 install-lib: all
 	@echo 'create ${DESTDIR}${LIBDIR}'; install -d ${DESTDIR}${LIBDIR}
@@ -108,6 +109,13 @@ install-bin: all
 		basename=$${bin%*.sh}; \
 		echo "install ${DESTDIR}${BINDIR}/$$basename"; \
 		install -C -m ${BINMODE} "$$bin" "${DESTDIR}${BINDIR}/$$basename"; \
+	done
+
+install-cmd: all
+	@echo 'create ${DESTDIR}${LIBDIR}/command'; install -d ${DESTDIR}${LIBDIR}/command
+	@for cmd in ${CMD}; do \
+		echo "install ${DESTDIR}${LIBDIR}/command/$$cmd"; \
+		install -C -m ${BINMODE} "$$cmd" "${DESTDIR}${LIBDIR}/command/$$cmd"; \
 	done
 
 install-conf: all

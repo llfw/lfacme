@@ -6,16 +6,23 @@
 .Nm lfacme
 .Nd issue, renew and manage ACME certificates
 .Sh SYNOPSIS
-.Nm lfacme-setup
-.Op opts
-.Nm lfacme-renew
-.Op opts
+.Nm lfacme
+.Op Fl v
+.Op Fl c Ar confdir
+.Cm setup
+.Op Fl y
+.Nm lfacme
+.Op Fl v
+.Op Fl c Ar confdir
+.Cm renew
+.Op Fl f
 .Sh DESCRIPTION
 The
 .Nm
-software package supports management of TLS certificates using an ACME server.
+command supports automated management of TLS certificates using an ACME server.
 Certificates can be automatically issued and renewed, and a hook system allows
-software using those certificates to be automatically (re)configured.
+software using those certificates to be automatically (re)configured with the
+new certificate.
 .Pp
 Prior to using
 .Nm ,
@@ -31,28 +38,33 @@ and
 .Xr domains.conf 5
 for more detailed documentation on these files.
 .Pp
-To perform initial setup, run
-.Xr lfacme-setup 8 .
-This will register an account on the ACME server, and create any required
-local data.
-Running
-.Xr lfacme-setup 8
-will not issue any certificates.
+The following options are supported:
+.Bl -tag -width Fl c Ar confdir
+.It Fl c Ar confdir
+Load the configuration from
+.Ar confdir
+instead of the default
+.Pa __CONFDIR__ .
+.It Fl v
+Print more detailed output while running.
+.El
 .Pp
-To issue or renew certificates, run
+The following commands are supported:
+.Bl -tag -width Cm setup
+.It Cm setup
+Create a new account on the ACME server.
+This must be run prior to issuing any certificates.
+See
+.Xr lfacme-setup 8 .
+.It Cm renew
+Issue or renew any certificates based on the
+.Xr domains.conf 5
+configuration file.
+See
 .Xr lfacme-renew 8 .
-This will examine the certificates configured in
-.Xr domains.conf 5 ;
-new certificates will be issued, while existing certificates will be renewed
-if necessary.
-To ensure certificates are automatically renewed when required,
-.Xr lfacme-renew 8
-should be run regularly, e.g. using
-.Xr cron 8 .
 .Sh ENVIRONMENT
-The following environment variables affect the executation of the
-.Nm
-utilities:
+The following environment variables affect the executation of
+.Nm :
 .Bl -tag -width LFACME_VERBOSE
 .It Ev LFACME_CONFDIR
 Override the default configuration directory.

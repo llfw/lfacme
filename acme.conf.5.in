@@ -18,13 +18,12 @@ variable assignment, i.e.
 .Dq Ar option Ns = Ns Ar value .
 .Pp
 Alternatively, options may be set as environment variables prior to running
-.Nm lfacme
-utilities.
-If all required options are set in the environment, then creating the
+.Nm lfacme .
+If all required options are set in the environment, then the
 .Nm
 file is not required.
 .Pp
-The following configuration variables are supported:
+The following configuration options are supported:
 .Bl -tag -width indent
 .It Va ACME_URL
 (Required.)
@@ -32,13 +31,13 @@ The URL of the ACME server.
 .It Va ACME_DATADIR
 The path to the runtime data directory, where the ACME account key and any
 issued certificates will be stored.
-The default value is
+The default path is
 .Pa /var/db/lfacme .
 .It Va ACME_HOOKDIR
 The path to a directory containing hooks to invoke when issuing certificates
 (see
 .Xr domains.conf 5 ) .
-The default value is
+The default path is
 .Pa __CONFDIR__/hooks .
 .El
 .Pp
@@ -46,5 +45,8 @@ Additional configuration variables may be used by the ACME validation hooks;
 refer to the manual page for each hook for more details.
 .Sh SEE ALSO
 .Xr domains.conf 5 ,
-.Xr lfacme-renew 8 ,
-.Xr lfacme-setup 8
+.Xr lfacme 8 ,
+.Xr lfacme-dns 7 ,
+.Xr lfacme-http 7 ,
+.Xr lfacme-kerberos 7 ,
+.Xr lfacme-ualpn 7

@@ -3,16 +3,17 @@
 .Dt LFACME-RENEW 8
 .Os
 .Sh NAME
-.Nm lfacme-renew
+.Nm lfacme renew
 .Nd issue or renew ACME certificates
 .Sh SYNOPSIS
-.Nm
-.Op Fl fv
-.Op Fl c Ar confdir
+.Nm lfacme
+.Op opts
+.Cm renew
+.Op Fl f
 .Sh DESCRIPTION
 The
 .Nm
-utility examines the ACME certificates configured in
+command examines the ACME certificates configured in
 .Xr domains.conf 5 .
 If a certificate was previously issued and is still valid for longer than 30
 days, it will be ignored.
@@ -26,18 +27,8 @@ before running
 .Pp
 The follow options are accepted:
 .Bl -tag -width indent
-.It Fl c Ar confdir
-Use
-.Ar confdir
-as the configuration directory instead of the default
-.Pa __CONFDIR__ .
 .It Fl f
-Force renewal of certificates, even if they're not going to expire soon.
-.It Fl v
-Produce more output when running.
-This also passes the
-.Fl v
-option to uacme.
+Force renewal of certificates, even if the normal renewal date hasn't arrived.
 .El
 .Sh ENVIRONMENT
 Refer to
@@ -46,5 +37,5 @@ for a list of environment variables which affect the operation of
 .Nm .
 .Sh SEE ALSO
 .Xr domains.conf 5 ,
-.Xr lfacme 7 ,
+.Xr lfacme 8 ,
 .Xr lfacme-setup 8
