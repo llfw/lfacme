@@ -24,9 +24,9 @@ fi
 
 case "$ACTION" in
 	begin)
-		_verbose "creating validation token %s" "$_file"
+		_verbose "creating validation token for %s" "$DOMAIN"
 		status="$(ualpn <<EOF
-auth ${DOMAIN} ${AUTH}
+auth $DOMAIN $AUTH
 EOF
 )"
 		if [ "$status" = "OK" ]; then
@@ -37,9 +37,9 @@ EOF
 		;;
 
 	done|failed)
-		_verbose "deleting validation token %s" "$_file"
+		_verbose "deleting validation token for %s" "$DOMAIN"
 		status="$(ualpn <<EOF
-unauth ${DOMAIN}
+unauth $DOMAIN
 EOF
 )"
 		if [ "$status" = "OK" ]; then
