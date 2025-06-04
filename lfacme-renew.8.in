@@ -10,6 +10,7 @@
 .Op opts
 .Cm renew
 .Op Fl f
+.Op Ar certificate
 .Sh DESCRIPTION
 The
 .Nm
@@ -19,11 +20,16 @@ If a certificate was previously issued and is still valid for longer than 30
 days, it will be ignored.
 Otherwise, the certificate will be issued or renewed and any configured hook
 scripts will be invoked.
-.Pp
 An ACME account must be created using
 .Xr lfacme-setup 8
 before running
 .Nm .
+.Pp
+If the
+.Ar certificate
+argument is provided, only the certificate with the given identifier will
+be renewed.
+Otherwise, all elegible certificates will be renewed.
 .Pp
 The follow options are accepted:
 .Bl -tag -width indent

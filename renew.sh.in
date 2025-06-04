@@ -240,11 +240,17 @@ _docert() {
 	return $?
 }
 
+_whichcert="$1"; shift
+if ! [ -z "$1" ]; then
+	_fatal "unexpected argument: $1"
+fi
+
 cat "$_DOMAINS" \
 | egrep -v '^(#|[[:space:]]*$)' \
 | (
 	_default_args=""
 	_exit=0
+	_didany=0
 
 	while read identifier args; do
 		if [ "$identifier" = "*" ]; then
@@ -252,10 +258,19 @@ cat "$_DOMAINS" \
 			continue
 		fi
 
+		if ! [ -z "$_whichcert" ] && [ "$_whichcert" != "$identifier" ]; then
+			continue
+		fi
+
 		if ! _docert "$identifier" $_default_args $args; then
 			_exit=1
 		fi
+		_didany=1
 	done
+
+	if [ "$_didany" -eq 0 ] && ! [ -z "$_whichcert" ]; then
+		_fatal "certificate not found: %s" "$_whichcert"
+	fi
 
 	exit $_exit
 )
