@@ -1,6 +1,6 @@
 .\" This source code is released into the public domain.
 .Dd June 4, 2025
-.Dt LFACME 7
+.Dt LFACME 8
 .Os
 .Sh NAME
 .Nm lfacme
