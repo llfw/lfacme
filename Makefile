@@ -62,8 +62,8 @@ REPLACE=	sed	-e 's,__PREFIX__,${PREFIX},g' \
 			-e 's,__LIBDIR__,${LIBDIR},g' \
 			-e 's,__BINDIR__,${BINDIR},g'
 
-.PHONY:	default all install install-lib install-bin install-conf \
-	install-hook install-man install-periodic
+.PHONY:	default all install install-lib install-bin install-cmd \
+	install-conf install-hook install-man install-periodic
 .SUFFIXES: .5 .5.in .7 .7.in .8 .8.in .sh .sh.in .sample .sample.in
 
 default: all
