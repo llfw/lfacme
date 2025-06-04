@@ -173,7 +173,7 @@ _docert() {
 
 	# make sure the challenge is valid.
 	challenge_path="$(_findchallenge "$identifier" "$challenge")"
-	if [ "$?" -ne 0 ]; then
+	if [ -z "$challenge_path" ]; then
 		return 1
 	fi
 
@@ -183,7 +183,7 @@ _docert() {
 	local _rhooks=""
 	for hook in $hooks; do
 		local _hookpath="$(_findhook "$identifier" "$hook")"
-		if [ "$?" -ne 0 ]; then
+		if [ -z "$_hookpath" ]; then
 			return 1
 		fi
 
@@ -246,21 +246,24 @@ _docert() {
 	return $?
 }
 
-_exit=0
-_default_args=""
-
 cat "$_DOMAINS" \
 | egrep -v '^(#|[[:space:]]*$)' \
-| while read identifier args; do
+| (
+	_default_args=""
+	_exit=0
 
-	if [ "$identifier" = "*" ]; then
-		_default_args="$args"
-		continue
-	fi
+	while read identifier args; do
+		if [ "$identifier" = "*" ]; then
+			_default_args="$args"
+			continue
+		fi
 
-	if ! _docert "$identifier" $_default_args $args; then
-		_exit=1
-	fi
-done
+		if ! _docert "$identifier" $_default_args $args; then
+			_exit=1
+		fi
+	done
 
-exit $_exit
+	exit $_exit
+)
+
+exit $?
