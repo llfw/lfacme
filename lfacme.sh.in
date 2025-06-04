@@ -17,6 +17,8 @@ while :; do
 		shift; shift;;
 	-v)
 		LFACME_VERBOSE=1
+		# Export this so it's available to hooks.
+		export LFACME_VERBOSE
 		shift;;
 	-y)
 		_uacme_flags="$_uacme_flags $1"
