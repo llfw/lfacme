@@ -1,6 +1,8 @@
 #! /bin/sh
 # This source code is released into the public domain.
 
+_OPENSSL="$(_findbin openssl $ACME_OPENSSL)"
+
 # Parse command-line arguments.
 args=$(getopt f $*)
 if [ $? -ne 0 ]; then
@@ -44,8 +46,8 @@ _make_key() {
 	umask 077
 
 	case $keytype in
-	ec)	openssl ecparam -name secp384r1 -genkey -noout -out "$keyfile";;
-	rsa)	openssl genrsa -out "$keyfile" 3072;;
+	ec)	$_OPENSSL ecparam -name secp384r1 -genkey -noout -out "$keyfile";;
+	rsa)	$_OPENSSL genrsa -out "$keyfile" 3072;;
 	*)	_error "%s: unknown key type %s?" "$keyfile" "$keytype"
 		return 1;;
 	esac
@@ -87,7 +89,7 @@ EOF
 	done
 
 	# Generate the CSR
-	openssl req -new -key "$keyfile" -out "$csrfile" -config "$csrconf"
+	$_OPENSSL req -new -key "$keyfile" -out "$csrfile" -config "$csrconf"
 	return $?
 }
 
