@@ -1,5 +1,9 @@
 # This source code is released into the public domain.
 
+.PHONY:	default all install install-lib install-bin install-conf \
+	install-hook install-man install-periodic
+.SUFFIXES: .5 .5.in .7 .7.in .8 .8.in .sh .sh.in .sample .sample.in
+
 PREFIX?=	/usr/local
 DESTDIR?=
 
@@ -59,19 +63,19 @@ clean:
 	rm -f ${MAN5} ${MAN7} ${MAN8} ${LIB} ${BIN}
 	rm -f ${HOOK} ${CHALLENGE} ${PERIODIC} ${CONF}
 
-%.sh: %.sh.in
+.sh.in.sh:
 	${REPLACE} <$< >$@
 
-%.sample: %.sample.in
+.sample.in.sample:
 	${REPLACE} <$< >$@
 
-%.5: %.5.in
+.5.in.5:
 	${REPLACE} <$< >$@
 
-%.7: %.7.in
+.7.in.7:
 	${REPLACE} <$< >$@
 
-%.8: %.8.in
+.8.in.8:
 	${REPLACE} <$< >$@
 
 install: install-lib install-bin install-conf install-hook install-man install-periodic
@@ -141,6 +145,3 @@ install-periodic: all
 				"${DESTDIR}${PERIODICDIR}/$$basename"; \
 		done; \
 	fi
-
-.PHONY:	default all install install-lib install-bin install-conf \
-	install-hook install-man install-periodic
