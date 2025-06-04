@@ -1,5 +1,7 @@
 # This is a sample configuration file for lfacme.  It is a shell script,
 # so you can include other files or call programs here if you like.
+#
+# See acme.conf(5) for documentation on this file.
 
 #######################################################################
 # Base options.
