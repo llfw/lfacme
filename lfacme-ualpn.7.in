@@ -33,6 +33,20 @@ daemon, which is part of uacme.
 The
 .Xr ualpn 1
 daemon must be configured and running for this challenge handler to work.
+.Sh CONFIGURATION
+The
+.Nm
+challenge hook supports the following configuration options in
+.Xr acme.conf 5 :
+.Bl -tag -width indent
+.It Va ACME_UALPN
+Path to the
+.Xr ualpn 1
+program.
+If not specified,
+.Ev $PATH
+will be searched.
+.El
 .Sh SEE ALSO
 .Xr acme.conf 5 ,
 .Xr domains.conf 5 ,

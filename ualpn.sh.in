@@ -22,10 +22,12 @@ if [ "$METHOD" != "tls-alpn-01" ]; then
 	exit 1
 fi
 
+_UALPN="$(_findbin ualpn $ACME_UALPN)"
+
 case "$ACTION" in
 	begin)
 		_verbose "creating validation token for %s" "$DOMAIN"
-		status="$(ualpn <<EOF
+		status="$($_UALPN <<EOF
 auth $DOMAIN $AUTH
 EOF
 )"
@@ -38,7 +40,7 @@ EOF
 
 	done|failed)
 		_verbose "deleting validation token for %s" "$DOMAIN"
-		status="$(ualpn <<EOF
+		status="$($_UALPN <<EOF
 unauth $DOMAIN
 EOF
 )"

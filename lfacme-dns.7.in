@@ -52,6 +52,20 @@ challenge hook supports the following configuration options in
 The key file that will be passed to
 .Xr nsupdate 1
 to authenticate the DNS update.
+.It Va ACME_DNS_DIG
+Path to the
+.Xr dig 1
+program.
+If not specified,
+.Ev $PATH
+will be searched.
+.It Va ACME_DNS_NSUPDATE
+Path to the
+.Xr nsupdate 1
+program.
+If not specified,
+.Ev $PATH
+will be searched.
 .El
 .Sh SEE ALSO
 .Xr acme.conf 5 ,

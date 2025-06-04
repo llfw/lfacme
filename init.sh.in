@@ -1,12 +1,14 @@
 # This source code is released into the public domain.
 
-_PROGNAME="$0"
+_PROGNAME="${0##*/}"
+
+trap 'exit 1' TERM
 
 _fatal() {
 	local _fmt=$1; shift
 	local _msg="$(printf "$_fmt" "$@")"
 	printf >&2 '%s: FATAL: %s\n' "$_PROGNAME" "$_msg"
-	exit 1
+	kill $$
 }
 
 _error() {
@@ -80,16 +82,51 @@ fi
 if [ ! -d "$ACME_DATADIR" ]; then
 	_info "creating directory %s" "$ACME_DATADIR"
 	mkdir -p "$ACME_DATADIR"
+	if [ "$?" -ne 0 ]; then
+		exit 1
+	fi
 fi
 
 # The domains.conf file.
 _DOMAINS="${_CONFDIR}/domains.conf"
 
+# Find a program based on $PATH, or return the second argument if specified.
+# If the program isn't found, print an error and exit.
+_findbin() {
+	local cmd="$1"
+	local force="$2"
+
+	if ! [ -z "$force" ]; then
+		if ! [ -x "$force" ]; then
+			_fatal "not found or not executable: %s" "$force"
+		fi
+
+		echo $force
+		return 0
+	fi
+
+	local oIFS="$IFS"
+	local IFS=:
+	for dir in $PATH; do
+		local _bin="${dir}/${cmd}"
+
+		if ! [ -x "$_bin" ]; then
+			continue
+		fi
+
+		echo $_bin
+		return 0
+	done
+	IFS="$oIFS"
+
+	_fatal "required command '%s' not found" "$cmd"
+}
+
 # uacme's base directory; this is where it puts certificates.
 _UACME_DIR="${ACME_DATADIR}/certs"
 
 # The uacme executable.
-_UACME=uacme
+_UACME="$(_findbin uacme $ACME_UACME)"
 
 _LFACME_UACME_FLAGS=""
 if ! [ -z "$LFACME_VERBOSE" ]; then

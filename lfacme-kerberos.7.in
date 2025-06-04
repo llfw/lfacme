@@ -65,6 +65,27 @@ This must contain a key for the principal configured by
 .Va ACME_KERBEROS_PRINCIPAL .
 The default value is
 .Pa /etc/krb5.keytab .
+.It Va ACME_KERBEROS_KINIT
+Path to the
+.Xr kinit 1
+program.
+If not specified,
+.Ev $PATH
+will be searched.
+.It Va ACME_DNS_DIG
+Path to the
+.Xr dig 1
+program.
+If not specified,
+.Ev $PATH
+will be searched.
+.It Va ACME_DNS_NSUPDATE
+Path to the
+.Xr nsupdate 1
+program.
+If not specified,
+.Ev $PATH
+will be searched.
 .El
 .Sh DNS SERVER CONFIGURATION
 For

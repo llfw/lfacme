@@ -32,7 +32,7 @@ _add_record() {
 	local domain="$1"
 	local auth="$2"
 
-	nsupdate -k "$ACME_DNS_KEYFILE" <<EOF
+	$_NSUPDATE -k "$ACME_DNS_KEYFILE" <<EOF
 update add _acme-challenge.${DOMAIN}. 300 IN TXT "${AUTH}"
 send
 EOF
@@ -44,7 +44,7 @@ _remove_record() {
 	local domain="$1"
 	local auth="$2"
 
-	nsupdate -k "$ACME_DNS_KEYFILE" <<EOF
+	$_NSUPDATE -k "$ACME_DNS_KEYFILE" <<EOF
 update delete _acme-challenge.${DOMAIN}. 300 IN TXT "${AUTH}"
 send
 EOF

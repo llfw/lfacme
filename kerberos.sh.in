@@ -15,6 +15,8 @@ TOKEN=$4
 # The token value we need to create.
 AUTH=$5
 
+_KINIT="$(_findbin kinit $ACME_KERBEROS_KINIT)"
+
 if [ "$#" -ne 5 ]; then
 	_fatal "missing arguments"
 fi
@@ -31,7 +33,12 @@ if [ -z "$ACME_KERBEROS_KEYTAB" ]; then
 	ACME_KERBEROS_KEYTAB="/etc/krb5.keytab"
 fi
 
-if ! kinit -k -t "$ACME_KERBEROS_KEYTAB" "$ACME_KERBEROS_PRINCIPAL"; then
+if ! [ -r "$ACME_KERBEROS_KEYTAB" ]; then
+	_fatal "keytab does not exist (or is not readable): %s" \
+		"$ACME_KERBEROS_KEYTAB"
+fi
+
+if ! $_KINIT -k -t "$ACME_KERBEROS_KEYTAB" "$ACME_KERBEROS_PRINCIPAL"; then
 	_fatal "failed to obtain a Kerberos ticket"
 fi
 
@@ -40,7 +47,7 @@ _add_record() {
 	local domain="$1"
 	local auth="$2"
 
-	nsupdate -g <<EOF
+	$_NSUPDATE -g <<EOF
 update add _acme-challenge.${DOMAIN}. 300 IN TXT "${AUTH}"
 send
 EOF
@@ -52,7 +59,7 @@ _remove_record() {
 	local domain="$1"
 	local auth="$2"
 
-	nsupdate -g <<EOF
+	$_NSUPDATE -g <<EOF
 update delete _acme-challenge.${DOMAIN}. 300 IN TXT "${AUTH}"
 send
 EOF

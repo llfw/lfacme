@@ -2,6 +2,9 @@
 #
 # Utility functions for DNS-based authorizations.
 
+_DIG="$(_findbin dig $ACME_DNS_DIG)"
+_NSUPDATE="$(_findbin nsupdate $ACME_DNS_NSUPDATE)"
+
 # Retrieve the nameservers for a given domain.  On failure, prints an error
 # message and exits.
 lfacme_dns_getnameservers() {
@@ -19,7 +22,7 @@ lfacme_dns_getnameservers() {
 		# For CNAME records, a query for NS will return the CNAME.
 		# Therefore we have to check we actually got NS records.
 		local nameservers="$(
-			dig "$_trydomain" ns +noall +answer | \
+			$_DIG "$_trydomain" ns +noall +answer | \
 			awk '$4 == "NS" { print $5 }'
 		)"
 
@@ -53,7 +56,7 @@ lfacme_dns_wait_for_nameserver() {
 		fi
 
 		local _rdatas="$(
-			dig "_acme-challenge.$domain" txt @$nameserver \
+			$_DIG "_acme-challenge.$domain" txt @$nameserver \
 				+noall +answer \
 			| awk '$4 == "TXT" { print $5 }'
 		)"
