@@ -1,0 +1,43 @@
+.\" This source code is released into the public domain.
+.Dd June 4, 2025
+.Dt LFACME-HTTP 5
+.Os
+.Sh NAME
+.Nm lfacme-http
+.Nd validate an ACME challenge via HTTP
+.Sh SYNOPSIS
+In
+.Xr domains.conf 5 :
+.Bd -ragged -offset indent
+.Ar domain
+challenge=http
+.Ed
+.Sh DESCRIPTION
+The
+.Nm
+challenge hook will respond to an ACME domain validation using an HTTP-based
+.Dq http-01
+authorization.
+To use this challenge hook, configure one or more domains with
+.Dq challenge=http
+in
+.Xr domains.conf 5 .
+.Pp
+The
+.Dq http-01
+challenge expects the authorization token to be served via HTTP at the path
+.Dq /.well-known/acme-challenge/ Ns Ar token
+on the domain to be validated.
+When
+.Nm
+responds to the challenge, it will place the token in the directory configured
+by
+.Ar ACME_HTTP_CHALLENGE_DIR
+in
+.Xr acme.conf 5 .
+This directory must be mapped to the appropriate path on the web server for
+the challenge to succeed.
+.Sh SEE ALSO
+.Xr acme.conf 5 ,
+.Xr domains.conf 5 ,
+.Xr lfacme-renew 8

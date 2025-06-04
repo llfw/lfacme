@@ -29,7 +29,9 @@ HOOK=		example-hook.sh
 
 MANMODE?=	0644
 MAN5=		acme.conf.5 \
-		domains.conf.5
+		domains.conf.5 \
+		lfacme-http.5 \
+		lfacme-kerberos.5
 MAN8=		lfacme-renew.8 \
 		lfacme-setup.8
 
