@@ -15,7 +15,10 @@ while :; do
 	-c)
 		_CONFDIR="$2"
 		shift; shift;;
-	-v|-y)
+	-v)
+		LFACME_VERBOSE=1
+		shift;;
+	-y)
 		_uacme_flags="$_uacme_flags $1"
 		shift;;
 	--)

@@ -17,7 +17,7 @@ while :; do
 		_CONFDIR="$2"
 		shift; shift;;
 	-v)
-		_uacme_flags="$_uacme_flags $1"
+		LFACME_VERBOSE=1
 		shift;;
 	--)
 		shift; break;;
@@ -101,6 +101,8 @@ EOF
 _docert() {
 	local identifier="$1"; shift
 
+	_verbose "checking certificate '%s'" "$identifier"
+
 	# uacme creates the cert name by stripping the extension from the
 	# CSR filename, so the basename has to match the identifier.
 	local dir="${_UACME_DIR}/${identifier}"
@@ -118,25 +120,38 @@ _docert() {
 	# parse arguments for this cert
 	while ! [ -z "$1" ]; do
 		case "$1" in
-		type=rsa)	keytype=rsa;;
-		type=ec)	keytype=ec;;
-		type=*)		_error "%s: unknown key type: %s" \
-					"$identifier" "${1#type=*}"
-				return 1;;
-		hook=*)		hooks="$hooks ${1#hook=*}";;
-		challenge=*)	challenge="${1#challenge=*}";;
-		*=*)		_error "%s: unknown option: %s" \
-					"$identifier" "$1"
-				return 1;;
-		*.*)		altnames="$altnames $1"
-				# Take the domain from the first altname.
-				if [ -z "$domain" ]; then
-					domain="$1"
-				fi
-				;;
-		*)		_error "%s: unknown option: %s" \
-					"$identifier" "$1"
-				return 1;;
+		type=rsa)
+			keytype=rsa
+			;;
+		type=ec)
+			keytype=ec
+			;;
+		type=*)
+			_error "%s: unknown key type: %s" \
+				"$identifier" "${1#type=*}"
+			return 1
+			;;
+		hook=*)
+			hooks="$hooks ${1#hook=*}"
+			;;
+		challenge=*)
+			challenge="${1#challenge=*}"
+			;;
+		*=*)
+			_error "%s: unknown option: %s" "$identifier" "$1"
+			return 1
+			;;
+		*.*)
+			altnames="$altnames $1"
+			# Take the domain from the first altname.
+			if [ -z "$domain" ]; then
+				domain="$1"
+			fi
+			;;
+		*)
+			_error "%s: unknown option: %s" "$identifier" "$1"
+			return 1
+			;;
 		esac
 		shift
 	done
@@ -214,11 +229,13 @@ _docert() {
 	# otherwise, exit code is 0 which means we (re)issued the cert,
 	# so run the hooks.
 	for hook in $_rhooks; do
-		env	"LFACME_CONFDIR=${_CONFDIR}"	\
-			"LFACME_CERT=${identifier}"	\
-			"LFACME_KEYFILE=${keyfile}"	\
-			"LFACME_CERTFILE=${certfile}"	\
-			$hook newcert
+		_verbose "running hook: %s" "$hook"
+		env	"LFACME_CONFDIR=${_CONFDIR}"		\
+			"LFACME_VERBOSE=${LFACME_VERBOSE}"	\
+			"LFACME_CERT=${identifier}"		\
+			"LFACME_KEYFILE=${keyfile}"		\
+			"LFACME_CERTFILE=${certfile}"		\
+			"$hook" newcert
 		if [ "$?" -ne 0 ]; then
 			_warn "%s: hook script '%s' failed" \
 				"$identifier" "$hook"

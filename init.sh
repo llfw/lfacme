@@ -21,6 +21,16 @@ _warn() {
 	printf >&2 '%s: WARNING: %s\n' "$_PROGNAME" "$_msg"
 }
 
+_verbose() {
+	if [ -z "$LFACME_VERBOSE" ]; then
+		return
+	fi
+
+	local _fmt=$1; shift
+	local _msg="$(printf "$_fmt" "$@")"
+	printf '%s: %s\n' "$_PROGNAME" "$_msg"
+}
+
 # The prefix we're installed in.
 _BASEDIR="/usr/local"
 # Where the internal scripts are.
@@ -75,9 +85,16 @@ _UACME_DIR="${ACME_DATADIR}/certs"
 # The uacme executable.
 _UACME=/usr/local/bin/uacme
 
+_LFACME_UACME_FLAGS=""
+if ! [ -z "$LFACME_VERBOSE" ]; then
+	_LFACME_UACME_FLAGS="$_LFACME_UACME_FLAGS -v"
+fi
+
 _uacme() {
-	env "LFACME_CONFDIR=${_CONFDIR}" \
-		"$_UACME" -a "$ACME_URL" -c "$_UACME_DIR" "$@"
+	env	"LFACME_CONFDIR=${_CONFDIR}"		\
+		"LFACME_VERBOSE=${LFACME_VERBOSE}"	\
+		"$_UACME" $_LFACME_UACME_FLAGS 		\
+		-a "$ACME_URL" -c "$_UACME_DIR" "$@"
 }
 
 # Find a challenge script and make sure it's valid.  If the challenge name

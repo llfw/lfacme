@@ -90,15 +90,15 @@ _wait_for_nameserver() {
 	local auth="$2"
 	local nameserver="$3"
 
-	echo "waiting for $domain on nameserver $ns..."
+	_verbose "waiting for nameserver %s" "$nameserver"
 
 	local waited=0
 	local waitlimit=60
 	while sleep 1; do
 		waited=$((waited + 1))
 		if [ "$waited" -ge "$waitlimit" ]; then
-			_error "timed out waiting for nameserver update for %s" \
-				"$domain"
+			_error "timed out waiting for '%s' on '%s'" \
+				"$domain" "$nameserver"
 			return 1
 		fi
 
@@ -121,6 +121,7 @@ _wait_for_record() {
 	local auth="$2"
 	local nameservers="$(_getnameservers "$domain")"
 
+	_verbose "waiting for the DNS record '%s' to be published" "$domain"
 	for ns in $nameservers; do
 		_wait_for_nameserver "$domain" "$auth" "$ns" || return 1
 	done

@@ -34,11 +34,13 @@ _file="${ACME_HTTP_CHALLENGE_DIR}/${TOKEN}"
 
 case "$ACTION" in
 	begin)
+		_verbose "creating validation token %s" "$_file"
 		echo "$AUTH" >"$_file"
 		exit $?
 		;;
 
 	done|failed)
+		_verbose "deleting validation token %s" "$_file"
 		rm -f "$_file"
 		exit $?
 		;;
