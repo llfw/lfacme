@@ -1,0 +1,41 @@
+.\" This source code is released into the public domain.
+.Dd June 4, 2025
+.Dt LFACME-UALPN 7
+.Os
+.Sh NAME
+.Nm lfacme-ualpn
+.Nd validate an ACME challenge via TLS using ualpn
+.Sh SYNOPSIS
+In
+.Xr domains.conf 5 :
+.Bd -ragged -offset indent
+.Ar domain
+challenge=ualpn
+.Ed
+.Sh DESCRIPTION
+The
+.Nm
+challenge hook will respond to an ACME domain validation using a TLS-based
+.Dq tls-alpn-01
+authorization.
+To use this challenge hook, configure one or more domains with
+.Dq challenge=ualpn
+in
+.Xr domains.conf 5 .
+.Pp
+The
+.Dq tls-alpn-01
+challenge expects the authorization token to be provided in response to a
+TLS connection to port 443 on the domain to be valided.
+This functionality is provided by the
+.Xr ualpn 1
+daemon, which is part of uacme.
+The
+.Xr ualpn 1
+daemon must be configured and running for this challenge handler to work.
+.Sh SEE ALSO
+.Xr acme.conf 5 ,
+.Xr domains.conf 5 ,
+.Xr lfacme 7 ,
+.Xr lfacme-renew 8 ,
+.Xr ualpn 1

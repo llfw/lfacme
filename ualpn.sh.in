@@ -1,0 +1,55 @@
+#! /bin/sh
+# This source code is released into the public domain.
+
+. __LIBDIR__/init.sh
+
+# begin, done or failed
+ACTION=$1
+# ACME method, must be http-01.
+METHOD=$2
+# The full domain name we're authorising.
+DOMAIN=$3
+# Token name.
+TOKEN=$4
+# The token value we need to create.
+AUTH=$5
+
+if [ "$#" -ne 5 ]; then
+	_fatal "missing arguments"
+fi
+
+if [ "$METHOD" != "tls-alpn-01" ]; then
+	exit 1
+fi
+
+case "$ACTION" in
+	begin)
+		_verbose "creating validation token %s" "$_file"
+		status="$(ualpn <<EOF
+auth ${DOMAIN} ${AUTH}
+EOF
+)"
+		if [ "$status" = "OK" ]; then
+			exit 0
+		else
+			exit 1
+		fi
+		;;
+
+	done|failed)
+		_verbose "deleting validation token %s" "$_file"
+		status="$(ualpn <<EOF
+unauth ${DOMAIN}
+EOF
+)"
+		if [ "$status" = "OK" ]; then
+			exit 0
+		else
+			exit 1
+		fi
+		;;
+
+	*)
+		_fatal "unknown action: %s" "$ACTION"
+		;;
+esac

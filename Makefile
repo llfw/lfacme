@@ -25,7 +25,8 @@ LIB=		init.sh dnsutils.sh
 CHALLENGEMODE?=	0755
 CHALLENGE=	dns.sh \
 		http.sh \
-		kerberos.sh
+		kerberos.sh \
+		ualpn.sh
 
 BINMODE?=	0755
 BIN=		lfacme-renew.sh \
@@ -44,7 +45,8 @@ MAN5=		acme.conf.5 \
 MAN7=		lfacme.7 \
 		lfacme-dns.7 \
 		lfacme-http.7 \
-		lfacme-kerberos.7
+		lfacme-kerberos.7 \
+		lfacme-ualpn.7
 MAN8=		lfacme-renew.8 \
 		lfacme-setup.8
 
